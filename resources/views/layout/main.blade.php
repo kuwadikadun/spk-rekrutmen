@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Quixlab - Bootstrap Admin Dashboard Template by Themefisher.com</title>
+    <title>@yield('title')</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/images/favicon.png') }}">
     <!-- Pignose Calender -->
@@ -80,6 +80,9 @@
     <script src="{{ asset('./assets/plugins/chartist/js/chartist.min.js') }}"></script>
     <script src="{{ asset('./assets/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js') }}"></script>
 
+    <script src="{{ asset('./assets/plugins/tables/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('./assets/plugins/tables/js/datatable/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('./assets/plugins/tables/js/datatable-init/datatable-basic.min.js') }}"></script>
 
 
     <script src="{{ asset('./assets/js/dashboard/dashboard-1.js') }}"></script>
