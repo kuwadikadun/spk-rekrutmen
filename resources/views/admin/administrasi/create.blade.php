@@ -44,22 +44,23 @@
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="kualifikasi">Kelengkapan</label>
                             <div class="col-lg-6">
-                                <input type="number" min="0" max="100"  class="form-control" value="{{old('kelengkapan')}}" id="kelengkapan" name="kelengkapan" placeholder="Masukkan tempat lahir...">
+                                <input type="number" min="0" max="100"  class="form-control" value="{{old('kelengkapan')}}" id="kelengkapan" name="kelengkapan" placeholder="Masukkan kelengkapan...">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="kualifikasi">Kerapihan</label>
                             <div class="col-lg-6">
-                                <input type="number" min="0" max="100"  class="form-control" value="{{old('kerapihan')}}" id="kerapihan" name="kerapihan" placeholder="Masukkan tempat lahir...">
+                                <input type="number" min="0" max="100"  class="form-control" value="{{old('kerapihan')}}" id="kerapihan" name="kerapihan" placeholder="Masukkan kerapihan..">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="kualifikasi">Nilai Ijazah</label>
                             <div class="col-lg-6">
-                                <input type="number" min="0" max="100"  class="form-control" value="{{old('nilai_ijazah')}}" id="nilai_ijazah" name="nilai_ijazah" placeholder="Masukkan tempat lahir...">
+                                <input type="number" min="0" max="100"  class="form-control" value="{{old('nilai_ijazah')}}" id="nilai_ijazah" name="nilai_ijazah" placeholder="Masukkan nilai ijazah...">
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Kirim</button>
+                        <a href="{{ url('/admin/administrasi') }}" class="btn btn-danger">Batal</a>
                     </form>
                 </div>
             </div>

@@ -12,6 +12,7 @@ use App\Models\Peringkat;
 use App\Models\User;
 use App\Models\Wawancara;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -60,7 +61,7 @@ class AdminController extends Controller
 
         // Lowongan::create($validasiData);
 
-        return redirect('/admin/lowongan')->with('success', 'Data berhasil disimpan.');
+        return redirect('/admin/lowongan')->with('status', 'Data berhasil ditambah.');
     }
 
     public function editLowongan($id){
@@ -80,15 +81,27 @@ class AdminController extends Controller
             'tanggal_tutup' => $request->tanggal_tutup,
         ]);
 
-        return redirect('/admin/lowongan')->with('success', 'Data berhasil diupdate.');
+        return redirect('/admin/lowongan')->with('status', 'Data berhasil diubah.');
     }
+
+    public function deleteLowongan($id) {
+        Lowongan::destroy($id);
+        return redirect('/admin/lowongan')->with('status', 'Data berhasil dihapus.');
+    }
+
+    // End Lowongan
 
 
 
     public function indexAdministrasi(){
         $administrasi = Administrasi::all();
+        $data = DB::table('administrasis')
+            ->join('lamarans', 'administrasis.id_lamaran', '=', 'lamarans.id')
+            ->join('users', 'administrasis.id_user', '=', 'users.id')
+            ->select('administrasis.*', 'lamarans.tanggal_lamaran', 'users.nik', 'users.name')
+            ->get();
         
-        return view('admin.administrasi.index', compact('administrasi'));
+        return view('admin.administrasi.index', compact('data'));
     }
 
     public function createAdministrasi(){
@@ -124,8 +137,42 @@ class AdminController extends Controller
 
         // Lowongan::create($validasiData);
 
-        return redirect('/admin/administrasi')->with('success', 'Data berhasil disimpan.');
+        return redirect('/admin/administrasi')->with('status', 'Data berhasil ditambah.');
     }
+
+    public function editAdministrasi() {
+            $lamaran = Lamaran::all();
+            $pelamar = User::all();
+    
+    
+            return view('admin.administrasi.edit', compact('lamaran', 'pelamar'));
+    }
+
+    public function updateAdministrasi(Request $request, $id) {
+        $kelengkapan = $request->input('kelengkapan');
+        $kerapihan = $request->input('kualifikasi');
+        $nilai_ijazah = $request->input('nilai_ijazah');
+        
+        $total = $kelengkapan + $kerapihan + $nilai_ijazah;
+
+        Administrasi::where($id)->update([
+            'id_lamaran' => $request->id_lamaran,
+            'id_user' => $request->id_user,
+            'kelengkapan' => $kelengkapan,
+            'kerapihan' => $kerapihan,
+            'nilai_ijazah' => $nilai_ijazah,
+            'total' => $total,
+        ]);
+
+        return redirect('/admin/administrasi')->with('status', 'Data berhasil diubah.');
+    }
+
+    public function deleteAdministrasi($id) {
+        Administrasi::destroy($id);
+        return redirect('/admin/administrasi')->with('status', 'Data berhasil dihapus.');
+    }
+
+    // End Administrasi
 
 
 
@@ -163,7 +210,7 @@ class AdminController extends Controller
 
         // Lowongan::create($validasiData);
 
-        return redirect('/admin/jadwal_keterampilan')->with('success', 'Data berhasil disimpan.');
+        return redirect('/admin/jadwal_keterampilan')->with('status', 'Data berhasil disimpan.');
     }
 
 
@@ -209,7 +256,7 @@ class AdminController extends Controller
 
         // Lowongan::create($validasiData);
 
-        return redirect('/admin/keterampilan')->with('success', 'Data berhasil disimpan.');
+        return redirect('/admin/keterampilan')->with('status', 'Data berhasil disimpan.');
     }
 
     public function peringkat(){
@@ -261,7 +308,7 @@ class AdminController extends Controller
     
             // Lowongan::create($validasiData);
     
-            return redirect('/admin/jadwal_wawancara')->with('success', 'Data berhasil disimpan.');
+            return redirect('/admin/jadwal_wawancara')->with('status', 'Data berhasil disimpan.');
         }
     
     
@@ -308,6 +355,6 @@ class AdminController extends Controller
     
             // Lowongan::create($validasiData);
     
-            return redirect('/admin/wawancara')->with('success', 'Data berhasil disimpan.');
+            return redirect('/admin/wawancara')->with('status', 'Data berhasil disimpan.');
         }
 }

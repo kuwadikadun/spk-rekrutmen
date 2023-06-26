@@ -40,7 +40,7 @@
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="kualifikasi">Kualifikasi</label>
                             <div class="col-lg-6">
-                                <input type="text" class="form-control" value="{{old('kualifikasi')}}" id="kualifikasi" name="kualifikasi" placeholder="Masukkan tempat lahir...">
+                                <input type="text" class="form-control" value="{{old('kualifikasi')}}" id="kualifikasi" name="kualifikasi" placeholder="Masukkan kualifikasi...">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -63,6 +63,7 @@
                         </div> --}}
                        
                         <button type="submit" class="btn btn-primary">Kirim</button>
+                        <a href="/admin/lowongan" class="btn btn-danger">Batal</a>
                     </form>
                 </div>
             </div>

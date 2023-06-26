@@ -1,6 +1,6 @@
 @extends('admin.layout.master')
 
-@section('title', 'Tambah Lowongan')
+@section('title', 'Ubah Lowongan Kerja')
 
 @section('content')
     <div class="row justify-content-center">
@@ -64,6 +64,7 @@
                         </div> --}}
                        
                         <button type="submit" class="btn btn-primary">Kirim</button>
+                        <a href="/admin/lowongan" class="btn btn-danger">Batal</a>
                     </form>
                 </div>
             </div>
