@@ -17,7 +17,9 @@ use Illuminate\Support\Facades\DB;
 class AdminController extends Controller
 {
     public function dashboard(){
-        return view('admin.dashboard');
+        $lowongan = Lowongan::all();
+
+        return view('admin.dashboard',compact('lowongan'));
     }
 
 
@@ -108,7 +110,6 @@ class AdminController extends Controller
         $lamaran = Lamaran::all();
         $pelamar = User::all();
 
-
         return view('admin.administrasi.create', compact('lamaran', 'pelamar'));
     }
 
@@ -122,7 +123,7 @@ class AdminController extends Controller
         ]);
 
         $kelengkapan = $request->input('kelengkapan');
-        $kerapihan = $request->input('kualifikasi');
+        $kerapihan = $request->input('kerapihan');
         $nilai_ijazah = $request->input('nilai_ijazah');
         
         $total = $kelengkapan + $kerapihan + $nilai_ijazah;
@@ -140,22 +141,24 @@ class AdminController extends Controller
         return redirect('/admin/administrasi')->with('status', 'Data berhasil ditambah.');
     }
 
-    public function editAdministrasi() {
+    public function editAdministrasi($id) {
             $lamaran = Lamaran::all();
+            $lamaranCount = Lamaran::all()->count();
             $pelamar = User::all();
+            $pelamarCount = User::all()->count();
+            $user = Administrasi::where('id', $id)->get();    
     
-    
-            return view('admin.administrasi.edit', compact('lamaran', 'pelamar'));
+            return view('admin.administrasi.edit', compact('lamaran', 'lamaranCount', 'pelamar', 'pelamarCount', 'user'));
     }
 
     public function updateAdministrasi(Request $request, $id) {
         $kelengkapan = $request->input('kelengkapan');
-        $kerapihan = $request->input('kualifikasi');
+        $kerapihan = $request->input('kerapihan');
         $nilai_ijazah = $request->input('nilai_ijazah');
         
         $total = $kelengkapan + $kerapihan + $nilai_ijazah;
 
-        Administrasi::where($id)->update([
+        Administrasi::where('id', $id)->update([
             'id_lamaran' => $request->id_lamaran,
             'id_user' => $request->id_user,
             'kelengkapan' => $kelengkapan,
@@ -179,8 +182,13 @@ class AdminController extends Controller
     public function indexJadwalKeterampilan(){
         // $administrasi = Administrasi::all();
         $jadwal_keterampilan = JadwalKeterampilan::all();
+        $data = DB::table('jadwal_keterampilans')
+            ->join('users', 'jadwal_keterampilans.id_user', '=', 'users.id')
+            ->join('lamarans', 'jadwal_keterampilans.id_lamaran', '=', 'lamarans.id')
+            ->select('jadwal_keterampilans.*', 'users.nik', 'users.name', 'lamarans.tanggal_lamaran')
+            ->get();
         
-        return view('admin.jadwal_keterampilan.index', compact('jadwal_keterampilan'));
+        return view('admin.jadwal_keterampilan.index', compact('data'));
     }
 
     public function createJadwalKeterampilan(){
@@ -213,12 +221,23 @@ class AdminController extends Controller
         return redirect('/admin/jadwal_keterampilan')->with('status', 'Data berhasil disimpan.');
     }
 
+    public function deleteJadwalKeterampilan($id) {
+        JadwalKeterampilan::destroy($id);
+        return redirect('/admin/jadwal_keterampilan')->with('status', 'Data berhasil dihapus.');
+    }
+
 
     public function indexKeterampilan(){
         // $administrasi = Administrasi::all();
         $keterampilan = Keterampilan::all();
+        $data = DB::table('keterampilans')
+            ->join('users', 'keterampilans.id_user', '=', 'users.id')
+            ->join('lamarans', 'keterampilans.id_lamaran', '=', 'lamarans.id')
+            ->join('jadwal_keterampilans', 'keterampilans.id_jadwalKeterampilan', '=', 'jadwal_keterampilans.id')
+            ->select('keterampilans.*', 'users.nik', 'users.name', 'lamarans.tanggal_lamaran', 'jadwal_keterampilans.tanggal_tes')
+            ->get();
         
-        return view('admin.keterampilan.index', compact('keterampilan'));
+        return view('admin.keterampilan.index', compact('keterampilan', 'data'));
     }
 
     public function createKeterampilan(){
@@ -259,26 +278,46 @@ class AdminController extends Controller
         return redirect('/admin/keterampilan')->with('status', 'Data berhasil disimpan.');
     }
 
-    public function peringkat(){
-        $peringkat = Peringkat::join('user', 'peringkat.id', '=', 'user.id')
-            ->join('wawancara', 'peringkat.id', '=', 'wawancara.id')
-            ->join('keterampilan', 'peringkat.id', '=', 'keterampilan.id')
-            ->join('administrasi', 'peringkat.id', '=', 'administrasi.id')
-            ->select(
-                'peringkat.id',
-                'user.nama',
-                'wawancara.total',
-                'keterampilan.total',
-                'administrasi.total'
-            )
-            ->get();
-        }
+    public function editKeterampilan($id) {
+            $lamaranCount = Lamaran::all()->count();
+            $pelamarCount = User::all()->count();
+        $lamaran = Lamaran::all();
+        $jadwalKeterampilan = JadwalKeterampilan::all();
+        $jadwalKeterampilanCount = JadwalKeterampilan::all()->count();
+        $pelamar = User::all();
+        $data = Keterampilan::where('id', $id)->get();
+
+        return view('admin.keterampilan.edit', compact('lamaran', 'lamaranCount', 'jadwalKeterampilan', 'jadwalKeterampilanCount' ,'pelamar', 'pelamarCount', 'data'));
+    }
+
+    public function updateKeterampilan(Request $request, $id) {
+        $psikotes = $request->input('psikotes');
+        $ketangkasan = $request->input('ketangkasan');
+
+        $total = $psikotes + $ketangkasan ;
+
+        Keterampilan::where('id', $id)-> update([
+            'id_lamaran' => $request->id_lamaran,
+            'id_jadwalKeterampilan' => $request->id_jadwalKeterampilan,
+            'id_user' => $request->id_user,
+            'psikotes' => $psikotes,
+            'ketangkasan' => $ketangkasan,
+            'total' => $total,
+        ]);
+
+        return redirect('/admin/keterampilan')->with('status', 'Data berhasil diubah.');
+    }
 
         public function indexJadwalWawancara(){
             // $administrasi = Administrasi::all();
             $jadwal_wawancara = JadwalWawancara::all();
+            $data = DB::table('jadwal_wawancaras')
+            ->join('users', 'jadwal_wawancaras.id_user', '=', 'users.id')
+            ->join('lamarans', 'jadwal_wawancaras.id_lamaran', '=', 'lamarans.id')
+            ->select('jadwal_wawancaras.*', 'users.nik', 'users.name', 'lamarans.tanggal_lamaran')
+            ->get();
             
-            return view('admin.jadwal_wawancara.index', compact('jadwal_wawancara'));
+            return view('admin.jadwal_wawancara.index', compact('jadwal_wawancara', 'data'));
         }
     
         public function createJadwalWawancara(){
@@ -310,13 +349,24 @@ class AdminController extends Controller
     
             return redirect('/admin/jadwal_wawancara')->with('status', 'Data berhasil disimpan.');
         }
+
+        public function deleteJadwalWawancara($id) {
+            JadwalWawancara::destroy($id);
+            return redirect('/admin/jadwal_wawancara')->with('status', 'Data berhasil dihapus.');
+        }
     
     
         public function indexWawancara(){
             // $administrasi = Administrasi::all();
             $wawancara = Wawancara::all();
+            $data = DB::table('wawancaras')
+            ->join('users', 'wawancaras.id_user', '=', 'users.id')
+            ->join('lamarans', 'wawancaras.id_lamaran', '=', 'lamarans.id')
+            ->join('jadwal_wawancaras', 'wawancaras.id_jadwalWawancara', '=', 'jadwal_wawancaras.id')
+            ->select('wawancaras.*', 'users.nik', 'users.name', 'lamarans.tanggal_lamaran', 'jadwal_wawancaras.tanggal_tes')
+            ->get();
             
-            return view('admin.wawancara.index', compact('wawancara'));
+            return view('admin.wawancara.index', compact('wawancara', 'data'));
         }
     
         public function createWawancara(){
@@ -356,5 +406,100 @@ class AdminController extends Controller
             // Lowongan::create($validasiData);
     
             return redirect('/admin/wawancara')->with('status', 'Data berhasil disimpan.');
+        }
+
+        public function editWawancara($id) {
+            $lamaranCount = Lamaran::all()->count();
+            $lamaran = Lamaran::all();
+            $pelamarCount = User::all()->count();
+            $pelamar = User::all();
+            $jadwalWawancaraCount = JadwalWawancara::all()->count();
+            $jadwalWawancara = JadwalWawancara::all();
+            $data = Wawancara::where('id', $id)->get();
+
+            return view('admin.wawancara.edit', compact('lamaran', 'lamaranCount', 'jadwalWawancara', 'jadwalWawancaraCount' ,'pelamar', 'pelamarCount', 'data'));
+        }
+
+        public function updateWawancara(Request $request, $id) {
+
+            $ketegasan = $request->input('ketegasan');
+            $atitude = $request->input('atitude');
+            $grooming = $request->input('grooming');
+            
+            $total = $ketegasan + $atitude + $grooming ;
+
+        Wawancara::where('id', $id)-> update([
+            'id_lamaran' => $request->id_lamaran,
+            'id_jadwalWawancara' => $request->id_jadwalWawancara,
+            'id_user' => $request->id_user,
+            'ketegasan' => $request->ketegasan,
+            'atitude' => $request->atitude,
+            'grooming' => $request->grooming,
+            'total' => $total,
+        ]);
+
+        return redirect('/admin/wawancara')->with('status', 'Data berhasil diubah.');
+
+        }
+
+        public function deleteWawancara($id) {
+            Wawancara::destroy($id);
+            return redirect('/admin/wawancara')->with('status', 'Data berhasil dihapus.');
+        }
+
+        public function peringkat(){
+            $peringkat = DB::table('users')
+            ->join('administrasis', 'users.id', '=', 'administrasis.id_user')
+            ->join('keterampilans', 'users.id', '=', 'keterampilans.id_user')
+            ->join('wawancaras', 'users.id', '=', 'wawancaras.id_user')
+            ->select('users.name', 'users.no_telpon', 'administrasis.total AS total_admin', 'keterampilans.total AS total_terampil', 'wawancaras.total AS total_wawancara' )
+            ->get();
+            $peringkatCount = DB::table('users')
+            ->join('administrasis', 'users.id', '=', 'administrasis.id_user')
+            ->join('keterampilans', 'users.id', '=', 'keterampilans.id_user')
+            ->join('wawancaras', 'users.id', '=', 'wawancaras.id_user')
+            ->select('users.name', 'users.no_telpon', 'administrasis.total AS total_admin', 'keterampilans.total AS total_terampil', 'wawancaras.total AS total_wawancara' )
+            ->count();
+
+            $userCount = User::count();
+
+            $arrayKosong = array();
+
+            foreach($peringkat as $item) {
+                $name = $item->name;
+                $no_telpon = $item->no_telpon;
+                $total_admin = $item->total_admin;
+                $total_terampil = $item->total_terampil;
+                $total_wawancara = $item->total_wawancara;
+                $total_semua = $total_admin + $total_terampil + $total_wawancara;
+
+                $result = [
+                    'name' => $name,
+                    'no_telpon' => $no_telpon,
+                    'total_admin' => $total_admin,
+                    'total_terampil' => $total_terampil,
+                    'total_wawancara' => $total_wawancara,
+                    'total_semua' => $total_semua,
+                ];
+
+                array_push($arrayKosong, $result);
+            }
+
+            $sort = collect($arrayKosong)->sortByDesc('total_semua')->values()->all();
+            // $peringkat = Peringkat::join('users', 'peringkat.id', '=', 'users.id')
+            //     ->join('wawancara', 'peringkat.id', '=', 'wawancara.id')
+            //     ->join('keterampilan', 'peringkat.id', '=', 'keterampilan.id')
+            //     ->join('administrasi', 'peringkat.id', '=', 'administrasi.id')
+            //     ->select(
+            //         'peringkat.id',
+            //         'user.name',
+            //         'user.no_telpon',
+            //         'wawancara.total',
+            //         'keterampilan.total',
+            //         'administrasi.total'
+            //     )
+            //     ->get();
+
+            return view('admin.peringkat.index', compact('sort', 'peringkatCount'));
         }
 }

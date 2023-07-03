@@ -1,10 +1,10 @@
 @extends('admin.layout.master')
 
-@section('title', 'Ubah Lowongan')
+@section('title', 'Ubah Data Administrasi')
 
 @section('content')
     <div class="row justify-content-center">
-        <h4 class="mb-3">Lowongan Kerja</h4>
+        <h4 class="mb-3">Formulir Data Administrasi</h4>
 @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -17,16 +17,29 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <form action="/admin/administrasi/store" method="POST" enctype="multipart/form-data">
+                    @foreach ($user as $item) 
+                    <form action="/admin/administrasi/update/{{ $item->id }}" method="POST" enctype="multipart/form-data">
+                        @endforeach
                        @csrf
+                       @method('PATCH')
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="bidang">Lamaran</label>
                             <div class="col-lg-6">
                                 <select name="id_lamaran" id="id_lamaran" class="form-control">
                                     <option disabled value="">Pilih Lamaran</option>
-                                    @foreach ($lamaran as $data)
+                                    @for ($i = 0; $i < $lamaranCount; $i++)
+                                        <option @if ($lamaran[$i]['id'] == $user[0]['id_lamaran'])
+                                            selected
+                                        @endif value="{{$lamaran[$i]['id']}}">
+                                        @php
+                                                $tanggalLamaran = date('d F Y', strtotime($lamaran[$i]['tanggal_lamaran']))
+                                            @endphp
+                                            {{$tanggalLamaran}}
+                                    </option>
+                                    @endfor
+                                    {{-- @foreach ($lamaran as $data)
                                         <option value="{{$data->id}}">{{$data->tanggal_lamaran}}</option>
-                                     @endforeach
+                                     @endforeach --}}
                                 </select>
                             </div>
                         </div>
@@ -35,28 +48,33 @@
                            <div class="col-lg-6">
                                 <select name="id_user" id="id_user" class="form-control">
                                     <option disabled value="">Pilih Pelamar</option>
-                                    @foreach ($pelamar as $data)
+                                    @for ($i = 0; $i < $pelamarCount; $i++)
+                                        <option @if ($pelamar[$i]['id'] == $user[0]['id_user'])
+                                            selected
+                                        @endif value="{{$pelamar[$i]['id']}}">{{$pelamar[$i]['name']}}</option>
+                                    @endfor
+                                    {{-- @foreach ($pelamar as $data)
                                         <option value="{{$data->id}}">{{$data->name}}</option>
-                                     @endforeach
+                                     @endforeach --}}
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="kualifikasi">Kelengkapan</label>
                             <div class="col-lg-6">
-                                <input type="number" min="0" max="100"  class="form-control" value="{{old('kelengkapan')}}" id="kelengkapan" name="kelengkapan" placeholder="Masukkan kelengkapan...">
+                                <input type="number" min="0" max="100"  class="form-control" value="{{$user[0]['kelengkapan']}}" id="kelengkapan" name="kelengkapan" placeholder="Masukkan kelengkapan...">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="kualifikasi">Kerapihan</label>
                             <div class="col-lg-6">
-                                <input type="number" min="0" max="100"  class="form-control" value="{{old('kerapihan')}}" id="kerapihan" name="kerapihan" placeholder="Masukkan kerapihan..">
+                                <input type="number" min="0" max="100"  class="form-control" value="{{$user[0]['kerapihan']}}" id="kerapihan" name="kerapihan" placeholder="Masukkan kerapihan..">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="kualifikasi">Nilai Ijazah</label>
                             <div class="col-lg-6">
-                                <input type="number" min="0" max="100"  class="form-control" value="{{old('nilai_ijazah')}}" id="nilai_ijazah" name="nilai_ijazah" placeholder="Masukkan nilai ijazah...">
+                                <input type="number" min="0" max="100"  class="form-control" value="{{$user[0]['nilai_ijazah']}}" id="nilai_ijazah" name="nilai_ijazah" placeholder="Masukkan nilai ijazah...">
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Kirim</button>

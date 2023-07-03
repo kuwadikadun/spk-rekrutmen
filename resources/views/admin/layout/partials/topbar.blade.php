@@ -27,6 +27,13 @@
                         <span class="toggle-icon"><i class="icon-menu"></i></span>
                     </div>
                 </div>
+                <div class="header-left">
+                    <div class="input-group icons">
+                        <div class="input-group-prepend">
+                            <h3 class="mt-2 ml-2">Nama</h3>
+                        </div>
+                    </div>
+                </div>
                 <div class="header-right">
                     <ul class="clearfix">
                         <li class="icons dropdown">

@@ -5,7 +5,7 @@
             <div class="nk-nav-scroll">
                 <ul class="metismenu" id="menu">
                     <li>
-                        <a href="{{ url('/') }}" aria-expanded="false">
+                        <a href="{{ url('/admin/dashboard') }}" aria-expanded="false">
                             <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
                         </a>
                     </li>
@@ -14,11 +14,11 @@
                             <i class="icon-notebook menu-icon"></i><span class="nav-text">Lowongan</span>
                         </a>
                     </li>
-                    <li>
+                    {{-- <li>
                         <a href="{{ url('/admin/pelamar') }}" aria-expanded="false">
                             <i class="icon-badge menu-icon"></i><span class="nav-text">Data Pelamar</span>
                         </a>
-                    </li>
+                    </li> --}}
                     <li>
                         <a href="{{ url('/admin/administrasi') }}" aria-expanded="false">
                             <i class="icon-badge menu-icon"></i><span class="nav-text">Administrasi</span>
@@ -54,7 +54,7 @@
                     </li> --}}
              
                     <li>
-                        <a href="{{ url('user') }}" aria-expanded="false">
+                        <a href="{{ url('/admin/peringkat') }}" aria-expanded="false">
                             <i class="icon-people menu-icon"></i><span class="nav-text">Peringkat</span>
                         </a>
                     </li>

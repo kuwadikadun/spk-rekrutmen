@@ -1,10 +1,10 @@
 @extends('admin.layout.master')
 
-@section('title', 'Tambah Lowongan')
+@section('title', 'Tambah Data Administrasi')
 
 @section('content')
     <div class="row justify-content-center">
-        <h4 class="mb-3">Lowongan Kerja</h4>
+        <h4 class="mb-3">Formulir Data Administrasi</h4>
 @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -25,7 +25,12 @@
                                 <select name="id_lamaran" id="id_lamaran" class="form-control">
                                     <option disabled value="">Pilih Lamaran</option>
                                     @foreach ($lamaran as $data)
-                                        <option value="{{$data->id}}">{{$data->tanggal_lamaran}}</option>
+                                        <option value="{{$data->id}}">
+                                            @php
+                                                $tanggalLamaran = date('d F Y', strtotime($data->tanggal_lamaran))
+                                            @endphp
+                                            {{$tanggalLamaran}}
+                                        </option>
                                      @endforeach
                                 </select>
                             </div>

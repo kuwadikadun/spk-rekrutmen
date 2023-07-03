@@ -13,6 +13,8 @@
     <!-- Chartist -->
     <link rel="stylesheet" href="{{ asset('./assets/plugins/chartist/css/chartist.min.css') }}">
     <link rel="stylesheet" href="{{ asset('./assets/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css') }}">
+    {{-- Select --}}
+    {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
     <!-- Custom Stylesheet -->
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 
@@ -56,6 +58,7 @@
     <!--**********************************
         Scripts
     ***********************************-->
+    
     <script src="{{ asset('assets/plugins/common/common.min.js') }}"></script>
     <script src="{{ asset('assets/js/custom.min.js') }}"></script>
     <script src="{{ asset('assets/js/settings.js') }}"></script>
@@ -83,13 +86,14 @@
     <script src="{{ asset('./assets/plugins/tables/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('./assets/plugins/tables/js/datatable/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('./assets/plugins/tables/js/datatable-init/datatable-basic.min.js') }}"></script>
-
-
+    
+    
     <script src="{{ asset('./assets/js/dashboard/dashboard-1.js') }}"></script>
-
+    
     <script src="{{ asset('./assets/plugins/validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('./assets/plugins/validation/jquery.validate-init.js') }}"></script>
 
+    
 </body>
 
 </html>

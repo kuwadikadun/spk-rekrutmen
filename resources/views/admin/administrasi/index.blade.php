@@ -1,6 +1,6 @@
 @extends('admin.layout.master')
 
-@section('title', 'Data Pelamar Diterima')
+@section('title', 'Administrasi')
 
 @section('content')
 <div class="row">
@@ -8,7 +8,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="card-title">
-                    <h4>Pelamar Diterima</h4>
+                    <h4>Administrasi</h4>
                     <a href="{{ url('/admin/administrasi/create') }}" class="btn btn-primary">Tambah Data</a>
                 </div>
                 @if (session('status'))
@@ -38,7 +38,11 @@
                             @foreach ($data as $item)
                             <tr>                              
                                 <th>{{ $loop->iteration }}</th>
-                                <td>{{$item->tanggal_lamaran}}</td>
+                                <td>
+                                    @php
+                                        $tanggalLamaran = date('d F Y', strtotime($item->tanggal_lamaran))
+                                    @endphp
+                                    {{$tanggalLamaran}}</td>
                                 <td>{{$item->nik}}</td>
                                 <td>{{$item->name}}</td>
                                 <td>{{$item->kelengkapan}}</td>
@@ -46,6 +50,7 @@
                                 <td>{{$item->nilai_ijazah}}</td>
                                 <td>{{$item->total}}</td>
                                 <td>
+                                    <a href="{{ url('/admin/administrasi/edit', $item->id) }}" class="btn btn-warning">Edit</a>
                                     <form action="{{url('/admin/administrasi/delete', $item->id)}}" method="post" class="d-inline-block">
                                         @csrf
                                         @method('DELETE')

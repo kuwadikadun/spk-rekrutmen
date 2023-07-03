@@ -1,6 +1,6 @@
 @extends('admin.layout.master')
 
-@section('title', 'Data User')
+@section('title', 'Peringkat')
 
 @section('content')
 <div class="row">
@@ -8,31 +8,34 @@
         <div class="card">
             <div class="card-body">
                 <div class="card-title">
-                    <h4>Data User</h4>
+                    <h4>Peringkat</h4>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>No</th>
+                                <th>Peringkat</th>
                                 <th>Nama</th>
-                                <th>Email</th>
-                                <th>Password</th>
+                                <th>No. Telepon</th>
+                                <th>Administrasi</th>
+                                <th>Keterampilan</th>
+                                <th>Wawancara</th>
+                                <th>Total</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @for ($i = 0; $i < $peringkatCount; $i++)
+                                
                             <tr>
-                                <th>360000000</th>
-                                <td>Bandung Bondowoso</td>
-                                <td>bandungwashere@gmail.com</td>
-                                <td>******</td>
+                                <th>{{ $i+1 }}</th>
+                                <td>{{ $sort[$i]['name'] }}</td>
+                                <td>{{ $sort[$i]['no_telpon'] }}</td>
+                                <td>{{ $sort[$i]['total_admin'] }}</td>
+                                <td>{{ $sort[$i]['total_terampil'] }}</td>
+                                <td>{{ $sort[$i]['total_wawancara'] }}</td>
+                                <td>{{ $sort[$i]['total_semua'] }}</td>
                             </tr>
-                            <tr>
-                                <th>370000000</th>
-                                <td>Ken Dedes</td>
-                                <td>kenkenken@gmail.com</td>
-                                <td>******</td>
-                            </tr>
+                            @endfor
                         </tbody>
                     </table>
                 </div>

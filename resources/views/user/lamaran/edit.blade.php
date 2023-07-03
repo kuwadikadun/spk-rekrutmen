@@ -1,6 +1,6 @@
-@extends('admin.layout.master')
+@extends('user.layout.master')
 
-@section('title', 'Tambah Lowongan')
+@section('title', 'Kirim Lamaran')
 
 @section('content')
     <div class="row justify-content-center">
@@ -17,8 +17,12 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <form action="/admin/lowongan/store" method="POST" enctype="multipart/form-data">
+                    <form action="/pelamar/lowongan/store" method="POST" enctype="multipart/form-data">
                        @csrf
+                       <div class="form-group row">
+                        
+                           <input type="hidden" name="id_lowongan" value="{{ $lowongan->id }}">
+                        </div>
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="bidang">Nama Lowongan</label>
                             <div class="col-lg-6">
@@ -28,7 +32,7 @@
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="posisi">Nama Pelamar</label>
                             <div class="col-lg-6">
-                                <input type="text" class="form-control" value="{{old('posisi')}}" id="id_pelamar" name="id_pelamar" placeholder="Masukkan Nama Posisi...">
+                                <input type="text" class="form-control" value="{{old('posisi')}}" id="id_user" name="id_user" placeholder="Masukkan ID Pelamar...">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -51,6 +55,7 @@
                         </div> --}}
                        
                         <button type="submit" class="btn btn-primary">Kirim</button>
+                        <a href="{{ url('/pelamar/lowongan') }}" class="btn btn-danger">Batal</a>
                     </form>
                 </div>
             </div>

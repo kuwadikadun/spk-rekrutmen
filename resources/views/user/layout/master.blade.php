@@ -13,6 +13,10 @@
     <!-- Chartist -->
     <link rel="stylesheet" href="{{ asset('./assets/plugins/chartist/css/chartist.min.css') }}">
     <link rel="stylesheet" href="{{ asset('./assets/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css') }}">
+    
+    {{-- Bootstrap 4 --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
     <!-- Custom Stylesheet -->
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 
@@ -62,6 +66,10 @@
     <script src="{{ asset('assets/js/gleek.js') }}"></script>
     <script src="{{ asset('assets/js/styleSwitcher.js') }}"></script>
 
+     {{-- Bootstrap 4 --}}
+     {{-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script> --}}
+
     <!-- Chartjs -->
     <script src="{{ asset('./assets/plugins/chart.js/Chart.bundle.min.js') }}"></script>
     <!-- Circle progress -->
@@ -89,6 +97,9 @@
 
     <script src="{{ asset('./assets/plugins/validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('./assets/plugins/validation/jquery.validate-init.js') }}"></script>
+
+   
+
 
 </body>
 
