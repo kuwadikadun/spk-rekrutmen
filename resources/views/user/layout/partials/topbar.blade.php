@@ -29,19 +29,30 @@
                 </div>
                 <div class="header-right">
                     <ul class="clearfix">
-                        <li class="icons dropdown">
-                            <div class="user-img c-pointer position-relative"   data-toggle="dropdown">
+                        {{-- <li class="icons dropdown"> --}}
+                            @auth
+                            <div class="user-img c-pointer position-relative" data-toggle="dropdown">
                                 <span class="activity active"></span>
-                                <img src="{{ asset('assets/images/user/1.png') }}" height="40" width="40" alt="">
+                                {{-- Welcome, {{ auth()->user()->name }} --}}
+                                
+                                <h6 class="mb-0 mt-5 text-gray-600">Welcome, {{auth()->user()->name}}</h6>
+                             
                             </div>
                             <div class="drop-down dropdown-profile animated fadeIn dropdown-menu">
                                 <div class="dropdown-content-body">
-                                    <ul>
-                                        <li><a href="page-login.html"><i class="icon-key"></i> <span>Logout</span></a></li>
-                                    </ul>
+                                    {{-- <ul>
+                                        <li><a href="{{ url('/logout') }}"><i class=""></i> <span>Logout</span></a></li>
+                                    </ul> --}}
+                                    <form action="/logout/pelamar" method="POST">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item"><i class="icon-key"></i> Log Out</button>
+                                      </form>
                                 </div>
                             </div>
-                        </li>
+                        @endauth
+                        {{-- </li> --}}
+
+                  
                     </ul>
                 </div>
             </div>

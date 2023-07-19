@@ -40,7 +40,8 @@
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="kualifikasi">Kualifikasi</label>
                             <div class="col-lg-6">
-                                <input type="text" class="form-control" value="{{old('kualifikasi')}}" id="kualifikasi" name="kualifikasi" placeholder="Masukkan kualifikasi...">
+                                <textarea type="text" class="form-control"  value="{{old('kualifikasi')}}" id="kualifikasi" name="kualifikasi" placeholder="Masukkan kualifikasi..." style="height: 200px"></textarea>
+                                {{-- <input type="text" class="form-control" value="{{old('kualifikasi')}}" id="kualifikasi" name="kualifikasi" placeholder="Masukkan kualifikasi..."> --}}
                             </div>
                         </div>
                         <div class="form-group row">

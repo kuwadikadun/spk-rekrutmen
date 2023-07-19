@@ -15,6 +15,12 @@ class Keterampilan extends Model
         'id_user',
         'psikotes',
         'ketangkasan',
+        'nilaiasli_psikotes',
+        'nilaiasli_ketangkasan',
+        'nilaibobot_psikotes',
+        'nilaibobot_ketangkasan',
+        'cf',
+        'sf',
         'total',
      
     ];

@@ -8,11 +8,13 @@ use App\Models\JadwalWawancara;
 use App\Models\Keterampilan;
 use App\Models\Lamaran;
 use App\Models\Lowongan;
+use App\Models\Pegawai;
 use App\Models\Peringkat;
 use App\Models\User;
 use App\Models\Wawancara;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -94,6 +96,109 @@ class AdminController extends Controller
     // End Lowongan
 
 
+    // Lamaran
+    public function lamaran(){
+        $lamaran = Lamaran::all();
+        $data = DB::table('lamarans')
+        ->join('users', 'lamarans.id_user', '=', 'users.id')
+        ->join('lowongans', 'lamarans.id_lowongan', '=', 'lowongans.id')
+        ->select('lamarans.*', 'users.nik', 'users.name','lowongans.nama_bidang', 'lowongans.posisi')
+        ->get();
+        
+        return view('admin.lamaran.index', compact('lamaran', 'data'));
+    }
+
+
+    public function viewLamaran($id){
+        $lamaran = Lamaran::where('id', $id)->get();
+        return view('admin.lamaran.view', compact('lamaran'));
+    }
+
+
+    // Pelamar
+    public function pelamar(){
+        $user = User::all();
+        return view('admin.pelamar.index', compact('user'));
+    }
+
+
+
+
+
+    // Akun
+    public function indexAkun(){
+        $akun = Pegawai::all();
+
+        return view('admin.akun.index', compact('akun'));
+    }
+
+    public function createAkun(){
+        return view('admin.akun.create');
+    }
+
+    public function storeAkun(Request $request){
+        $validasiData = $request->validate([
+            'name' => 'required|string|max:50', 
+            'email' => 'required|string|max:255|unique:users',
+            'password' => 'required|string|max:50', 
+            'jenis_kelamin' => 'nullable',
+            'role' => 'required|string|max:50', 
+        ]);
+
+        
+        $validasiData['password'] = Hash::make($validasiData['password']);
+
+        
+
+        Pegawai::create($validasiData);
+
+        // dd($validasiData);
+
+        return redirect('/admin/akun')->with('success', 'Data berhasil disimpan.');
+    }
+
+    public function editAkun($id) {
+        $akun = Pegawai::where('id', $id)->get();    
+
+        return view('admin.akun.edit', compact('akun'));
+    }
+
+    public function updateAkun(Request $request, $id) {
+
+        $validasiData = $request->validate([
+            'name' => 'required|string|max:50', 
+            'email' => 'required|string|max:255|unique:users',
+            'password' => 'required|string|max:50', 
+            'jenis_kelamin' => 'nullable',
+            'role' => 'required|string|max:50', 
+        ]);
+
+        
+        $validasiData['password'] = Hash::make($validasiData['password']);
+
+        Pegawai::where('id', $id)-> update($validasiData);
+
+        return redirect('/admin/akun')->with('success', 'Data berhasil diedit');
+    }
+
+    public function deleteAkun($id) {
+        Pegawai::destroy($id);
+        return redirect('/admin/akun')->with('status', 'Data berhasil dihapus.');
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function indexAdministrasi(){
         $administrasi = Administrasi::all();
@@ -125,18 +230,109 @@ class AdminController extends Controller
         $kelengkapan = $request->input('kelengkapan');
         $kerapihan = $request->input('kerapihan');
         $nilai_ijazah = $request->input('nilai_ijazah');
-        
-        $total = $kelengkapan + $kerapihan + $nilai_ijazah;
 
-        $validasiData['total'] = $total;
-        $administrasi = new Administrasi($validasiData);
+        // Nilai Asli Kelengkapan
+        if($kelengkapan >= 90 && $kelengkapan <= 100){
+            $nilaiasli_kelengkapan = 5;
+        }else if($kelengkapan >= 80){
+            $nilaiasli_kelengkapan = 4;
+        }else if($kelengkapan >= 70){
+            $nilaiasli_kelengkapan = 3;
+        }else if($kelengkapan >= 60){
+            $nilaiasli_kelengkapan = 2;
+        }else if($kelengkapan >= 50){
+            $nilaiasli_kelengkapan = 1;
+        }
+
+        // Nilai Asli Kerapihan
+        if($kerapihan >= 90 && $kerapihan <= 100){
+            $nilaiasli_kerapihan = 5;
+        }else if($kerapihan >= 80){
+            $nilaiasli_kerapihan = 4;
+        }else if($kerapihan >= 70){
+            $nilaiasli_kerapihan = 3;
+        }else if($kerapihan >= 60){
+            $nilaiasli_kerapihan = 2;
+        }else if($kerapihan >= 50){
+            $nilaiasli_kerapihan = 1;
+        }
+        
+         // Nilai Asli Ijazah
+         if($nilai_ijazah >= 90 && $nilai_ijazah <= 100){
+            $nilaiasli_ijazah = 5;
+        }else if($nilai_ijazah >= 80){
+            $nilaiasli_ijazah = 4;
+        }else if($nilai_ijazah >= 70){
+            $nilaiasli_ijazah = 3;
+        }else if($nilai_ijazah >= 60){
+            $nilaiasli_ijazah = 2;
+        }else if($nilai_ijazah >= 50){
+            $nilaiasli_ijazah = 1;
+        }
+
+        // Nilai Selisih
+
+        $nilaiselisih_kelengkapan = $nilaiasli_kelengkapan - 4;
+        $nilaiselisih_kerapihan = $nilaiasli_kerapihan - 5;
+        $nilaiselisih_ijazah = $nilaiasli_ijazah - 3;
+
+
+
+// Tabel Bobot
+        $bobot_tabel = array(
+            0 => 5,
+    1 => 4.5,
+    -1 => 4,
+    2 => 3.5,
+    -2 => 3,
+    3 => 2.5,
+    -3 => 2,
+    4 => 1.5,
+    -4 => 1
+);
+
+// Nilai Bobot
+$bobot_kelengkapan = isset($bobot_tabel[$nilaiselisih_kelengkapan]) ? $bobot_tabel[$nilaiselisih_kelengkapan] : 0;
+$bobot_kerapihan = isset($bobot_tabel[$nilaiselisih_kerapihan]) ? $bobot_tabel[$nilaiselisih_kerapihan] : 0;
+$bobot_ijazah = isset($bobot_tabel[$nilaiselisih_ijazah]) ? $bobot_tabel[$nilaiselisih_ijazah] : 0;
+
+// echo "Bobot Kelengkapan: " . $bobot_kelengkapan . "<br>";
+// echo "Bobot Kerapihan: " . $bobot_kerapihan . "<br>";
+// echo "Bobot Ijazah: " . $bobot_ijazah . "<br>";
+        
+      // Perhitungan CF dan SF
+$nilai_cf = ($bobot_kerapihan + $bobot_ijazah) / 2;
+$nilai_sf = $bobot_kelengkapan;
+
+// Perhitungan Total
+$totaladministrasi = (0.6 * $nilai_cf) + (0.4 * $nilai_sf);
+
+// Simpan perhitungan nilai asli
+$validasiData['nilaiasli_kelengkapan'] = $nilaiasli_kelengkapan;
+$validasiData['nilaiasli_kerapihan'] = $nilaiasli_kerapihan;
+$validasiData['nilaiasli_ijazah'] = $nilaiasli_ijazah;
+
+// Simpan perhitungan nilai bobot
+$validasiData['nilaibobot_kelengkapan'] = $bobot_kelengkapan;
+$validasiData['nilaibobot_kerapihan'] = $bobot_kerapihan;
+$validasiData['nilaibobot_ijazah'] = $bobot_ijazah;
+
+
+
+// Simpan perhiungan cf,sg, dan total
+$validasiData['cf'] = $nilai_cf;
+$validasiData['sf'] = $nilai_sf;
+$validasiData['total'] = $totaladministrasi;
+
+
+        // $administrasi = new Administrasi($validasiData);
    
      
-        $administrasi->save();
-        // $lowongan->tutupLowongan();
+        // $administrasi->save();
+        // // $lowongan->tutupLowongan();
 
 
-        // Lowongan::create($validasiData);
+        Administrasi::create($validasiData);
 
         return redirect('/admin/administrasi')->with('status', 'Data berhasil ditambah.');
     }
@@ -152,20 +348,117 @@ class AdminController extends Controller
     }
 
     public function updateAdministrasi(Request $request, $id) {
+        $validasiData = $request->validate([
+            'id_lamaran' => 'required',
+            'id_user' => 'required',
+            'kelengkapan' => 'required|integer',
+            'kerapihan' => 'required|integer',
+            'nilai_ijazah' => 'required|integer',
+        ]);
+
         $kelengkapan = $request->input('kelengkapan');
         $kerapihan = $request->input('kerapihan');
         $nilai_ijazah = $request->input('nilai_ijazah');
-        
-        $total = $kelengkapan + $kerapihan + $nilai_ijazah;
 
-        Administrasi::where('id', $id)->update([
-            'id_lamaran' => $request->id_lamaran,
-            'id_user' => $request->id_user,
-            'kelengkapan' => $kelengkapan,
-            'kerapihan' => $kerapihan,
-            'nilai_ijazah' => $nilai_ijazah,
-            'total' => $total,
-        ]);
+        // Nilai Asli Kelengkapan
+        if($kelengkapan >= 90 && $kelengkapan <= 100){
+            $nilaiasli_kelengkapan = 5;
+        }else if($kelengkapan >= 80){
+            $nilaiasli_kelengkapan = 4;
+        }else if($kelengkapan >= 70){
+            $nilaiasli_kelengkapan = 3;
+        }else if($kelengkapan >= 60){
+            $nilaiasli_kelengkapan = 2;
+        }else if($kelengkapan >= 50){
+            $nilaiasli_kelengkapan = 1;
+        }
+
+        // Nilai Asli Kerapihan
+        if($kerapihan >= 90 && $kerapihan <= 100){
+            $nilaiasli_kerapihan = 5;
+        }else if($kerapihan >= 80){
+            $nilaiasli_kerapihan = 4;
+        }else if($kerapihan >= 70){
+            $nilaiasli_kerapihan = 3;
+        }else if($kerapihan >= 60){
+            $nilaiasli_kerapihan = 2;
+        }else if($kerapihan >= 50){
+            $nilaiasli_kerapihan = 1;
+        }
+        
+         // Nilai Asli Ijazah
+         if($nilai_ijazah >= 90 && $nilai_ijazah <= 100){
+            $nilaiasli_ijazah = 5;
+        }else if($nilai_ijazah >= 80){
+            $nilaiasli_ijazah = 4;
+        }else if($nilai_ijazah >= 70){
+            $nilaiasli_ijazah = 3;
+        }else if($nilai_ijazah >= 60){
+            $nilaiasli_ijazah = 2;
+        }else if($nilai_ijazah >= 50){
+            $nilaiasli_ijazah = 1;
+        }
+
+        // Nilai Selisih
+
+        $nilaiselisih_kelengkapan = $nilaiasli_kelengkapan - 4;
+        $nilaiselisih_kerapihan = $nilaiasli_kerapihan - 5;
+        $nilaiselisih_ijazah = $nilaiasli_ijazah - 3;
+
+
+
+// Tabel Bobot
+        $bobot_tabel = array(
+            0 => 5,
+    1 => 4.5,
+    -1 => 4,
+    2 => 3.5,
+    -2 => 3,
+    3 => 2.5,
+    -3 => 2,
+    4 => 1.5,
+    -4 => 1
+);
+
+// Nilai Bobot
+$bobot_kelengkapan = isset($bobot_tabel[$nilaiselisih_kelengkapan]) ? $bobot_tabel[$nilaiselisih_kelengkapan] : 0;
+$bobot_kerapihan = isset($bobot_tabel[$nilaiselisih_kerapihan]) ? $bobot_tabel[$nilaiselisih_kerapihan] : 0;
+$bobot_ijazah = isset($bobot_tabel[$nilaiselisih_ijazah]) ? $bobot_tabel[$nilaiselisih_ijazah] : 0;
+
+// echo "Bobot Kelengkapan: " . $bobot_kelengkapan . "<br>";
+// echo "Bobot Kerapihan: " . $bobot_kerapihan . "<br>";
+// echo "Bobot Ijazah: " . $bobot_ijazah . "<br>";
+        
+      // Perhitungan CF dan SF
+$nilai_cf = ($bobot_kerapihan + $bobot_ijazah) / 2;
+$nilai_sf = $bobot_kelengkapan;
+
+// Perhitungan Total
+$totaladministrasi = (0.6 * $nilai_cf) + (0.4 * $nilai_sf);
+
+
+// Simpan perhitungan nilai asli
+$validasiData['nilaiasli_kelengkapan'] = $nilaiasli_kelengkapan;
+$validasiData['nilaiasli_kerapihan'] = $nilaiasli_kerapihan;
+$validasiData['nilaiasli_ijazah'] = $nilaiasli_ijazah;
+
+// Simpan perhitungan nilai bobot
+$validasiData['nilaibobot_kelengkapan'] = $bobot_kelengkapan;
+$validasiData['nilaibobot_kerapihan'] = $bobot_kerapihan;
+$validasiData['nilaibobot_ijazah'] = $bobot_ijazah;
+
+$validasiData['cf'] = $nilai_cf;
+$validasiData['sf'] = $nilai_sf;
+$validasiData['total'] = $totaladministrasi;
+
+
+        // $administrasi = new Administrasi($validasiData);
+   
+     
+        // $administrasi->save();
+        // // $lowongan->tutupLowongan();
+
+        Administrasi::where('id', $id)->update($validasiData);
 
         return redirect('/admin/administrasi')->with('status', 'Data berhasil diubah.');
     }
@@ -221,6 +514,32 @@ class AdminController extends Controller
         return redirect('/admin/jadwal_keterampilan')->with('status', 'Data berhasil disimpan.');
     }
 
+    public function editJadwalKeterampilan($id) {
+        $lamaranCount = Lamaran::all()->count();
+        $pelamarCount = User::all()->count();
+    $lamaran = Lamaran::all();
+    $pelamar = User::all();
+    $data = JadwalKeterampilan::where('id', $id)->get();
+
+    return view('admin.jadwal_keterampilan.edit', compact('lamaran', 'lamaranCount','pelamar', 'pelamarCount', 'data'));
+    }
+
+
+    public function updateJadwalKeterampilan(Request $request, $id){
+        $validasiData = $request->validate([
+            'id_lamaran' => 'required',
+            'id_user' => 'required',
+            'tanggal_tes' => 'required',
+            'jam' => 'required',
+            'lokasi' => 'required',
+        ]);
+
+     
+       JadwalKeterampilan::where('id', $id)->update($validasiData);
+
+       return redirect('/admin/jadwal_keterampilan');
+    }
+
     public function deleteJadwalKeterampilan($id) {
         JadwalKeterampilan::destroy($id);
         return redirect('/admin/jadwal_keterampilan')->with('status', 'Data berhasil dihapus.');
@@ -262,15 +581,91 @@ class AdminController extends Controller
         $ketangkasan = $request->input('ketangkasan');
 
         
-        $total = $psikotes + $ketangkasan ;
+       // Nilai Asli Kelengkapan
+       if($psikotes >= 90 && $psikotes <= 100){
+        $nilaiasli_psikotes = 5;
+        }else if($psikotes >= 80){
+        $nilaiasli_psikotes = 4;
+        }else if($psikotes >= 70){
+        $nilaiasli_psikotes = 3;
+        }else if($psikotes >= 60){
+        $nilaiasli_psikotes = 2;
+        }else if($psikotes >= 50){
+        $nilaiasli_psikotes = 1;
+    }
 
-        $validasiData['total'] = $total;
+    // Nilai Asli Kerapihan
+    if($ketangkasan >= 90 && $ketangkasan <= 100){
+        $nilaiasli_ketangkasan = 5;
+    }else if($ketangkasan >= 80){
+        $nilaiasli_ketangkasan = 4;
+    }else if($ketangkasan >= 70){
+        $nilaiasli_ketangkasan = 3;
+    }else if($ketangkasan >= 60){
+        $nilaiasli_ketangkasan = 2;
+    }else if($ketangkasan >= 50){
+        $nilaiasli_ketangkasan = 1;
+    }
+    // Nilai Selisih
+
+    $nilaiselisih_psikotes = $nilaiasli_psikotes - 3;
+    $nilaiselisih_ketangkasan = $nilaiasli_ketangkasan - 4;
+
+
+
+// Tabel Bobot
+    $bobot_tabel = array(
+        0 => 5,
+1 => 4.5,
+-1 => 4,
+2 => 3.5,
+-2 => 3,
+3 => 2.5,
+-3 => 2,
+4 => 1.5,
+-4 => 1
+);
+
+// Nilai Bobot
+$bobot_psikotes = isset($bobot_tabel[$nilaiselisih_psikotes]) ? $bobot_tabel[$nilaiselisih_psikotes] : 0;
+$bobot_ketangkasan = isset($bobot_tabel[$nilaiselisih_ketangkasan]) ? $bobot_tabel[$nilaiselisih_ketangkasan] : 0;
+
+// echo "Bobot Kelengkapan: " . $bobot_kelengkapan . "<br>";
+// echo "Bobot Kerapihan: " . $bobot_kerapihan . "<br>";
+// echo "Bobot Ijazah: " . $bobot_ijazah . "<br>";
+    
+  // Perhitungan CF dan SF
+$nilai_cf = $bobot_psikotes;
+$nilai_sf = $bobot_ketangkasan;
+
+// Perhitungan Total
+$totalketerampilan = (0.6 * $nilai_cf) + (0.4 * $nilai_sf);
+
+//Simpan Nilai asli
+$validasiData['nilaiasli_psikotes'] = $nilaiasli_psikotes;
+$validasiData['nilaiasli_ketangkasan'] = $nilaiasli_ketangkasan;
+
+//Simpan Nilai asli
+$validasiData['nilaibobot_psikotes'] = $bobot_psikotes;
+$validasiData['nilaibobot_ketangkasan'] = $bobot_ketangkasan;
+
+
+//Simpan nilai total
+$validasiData['cf'] = $nilai_cf;
+$validasiData['sf'] = $nilai_sf;
+$validasiData['total'] = $totalketerampilan;
+
+
+    // $administrasi = new Administrasi($validasiData);
+
+ 
+    // $administrasi->save();
+    // // $lowongan->tutupLowongan();
+
+
+    Keterampilan::create($validasiData);
        
-        $keterampilan = new Keterampilan($validasiData);
-   
-     
-        $keterampilan->save();
-        // $lowongan->tutupLowongan();
+    
 
 
         // Lowongan::create($validasiData);
@@ -291,19 +686,99 @@ class AdminController extends Controller
     }
 
     public function updateKeterampilan(Request $request, $id) {
+        $validasiData = $request->validate([
+            'id_lamaran' => 'required',
+            'id_jadwalKeterampilan' => 'required',
+            'id_user' => 'required',
+            'psikotes' => 'required',
+            'ketangkasan' => 'required',
+        ]);
+
         $psikotes = $request->input('psikotes');
         $ketangkasan = $request->input('ketangkasan');
 
-        $total = $psikotes + $ketangkasan ;
+        
+       // Nilai Asli Kelengkapan
+       if($psikotes >= 90 && $psikotes <= 100){
+        $nilaiasli_psikotes = 5;
+        }else if($psikotes >= 80){
+        $nilaiasli_psikotes = 4;
+        }else if($psikotes >= 70){
+        $nilaiasli_psikotes = 3;
+        }else if($psikotes >= 60){
+        $nilaiasli_psikotes = 2;
+        }else if($psikotes >= 50){
+        $nilaiasli_psikotes = 1;
+    }
 
-        Keterampilan::where('id', $id)-> update([
-            'id_lamaran' => $request->id_lamaran,
-            'id_jadwalKeterampilan' => $request->id_jadwalKeterampilan,
-            'id_user' => $request->id_user,
-            'psikotes' => $psikotes,
-            'ketangkasan' => $ketangkasan,
-            'total' => $total,
-        ]);
+    // Nilai Asli Kerapihan
+    if($ketangkasan >= 90 && $ketangkasan <= 100){
+        $nilaiasli_ketangkasan = 5;
+    }else if($ketangkasan >= 80){
+        $nilaiasli_ketangkasan = 4;
+    }else if($ketangkasan >= 70){
+        $nilaiasli_ketangkasan = 3;
+    }else if($ketangkasan >= 60){
+        $nilaiasli_ketangkasan = 2;
+    }else if($ketangkasan >= 50){
+        $nilaiasli_ketangkasan = 1;
+    }
+    // Nilai Selisih
+
+    $nilaiselisih_psikotes = $nilaiasli_psikotes - 3;
+    $nilaiselisih_ketangkasan = $nilaiasli_ketangkasan - 4;
+
+
+
+// Tabel Bobot
+    $bobot_tabel = array(
+        0 => 5,
+1 => 4.5,
+-1 => 4,
+2 => 3.5,
+-2 => 3,
+3 => 2.5,
+-3 => 2,
+4 => 1.5,
+-4 => 1
+);
+
+// Nilai Bobot
+$bobot_psikotes = isset($bobot_tabel[$nilaiselisih_psikotes]) ? $bobot_tabel[$nilaiselisih_psikotes] : 0;
+$bobot_ketangkasan = isset($bobot_tabel[$nilaiselisih_ketangkasan]) ? $bobot_tabel[$nilaiselisih_ketangkasan] : 0;
+
+// echo "Bobot Kelengkapan: " . $bobot_kelengkapan . "<br>";
+// echo "Bobot Kerapihan: " . $bobot_kerapihan . "<br>";
+// echo "Bobot Ijazah: " . $bobot_ijazah . "<br>";
+    
+  // Perhitungan CF dan SF
+$nilai_cf = $bobot_psikotes;
+$nilai_sf = $bobot_ketangkasan;
+
+// Perhitungan Total
+$totalketerampilan = (0.6 * $nilai_cf) + (0.4 * $nilai_sf);
+
+//Simpan Nilai asli
+$validasiData['nilaiasli_psikotes'] = $nilaiasli_psikotes;
+$validasiData['nilaiasli_ketangkasan'] = $nilaiasli_ketangkasan;
+
+//Simpan Nilai asli
+$validasiData['nilaibobot_psikotes'] = $bobot_psikotes;
+$validasiData['nilaibobot_ketangkasan'] = $bobot_ketangkasan;
+
+$validasiData['cf'] = $nilai_cf;
+$validasiData['sf'] = $nilai_sf;
+$validasiData['total'] = $totalketerampilan;
+
+
+    // $administrasi = new Administrasi($validasiData);
+
+ 
+    // $administrasi->save();
+    // // $lowongan->tutupLowongan();
+
+
+        Keterampilan::where('id', $id)-> update($validasiData);
 
         return redirect('/admin/keterampilan')->with('status', 'Data berhasil diubah.');
     }
@@ -350,6 +825,32 @@ class AdminController extends Controller
             return redirect('/admin/jadwal_wawancara')->with('status', 'Data berhasil disimpan.');
         }
 
+        public function editJadwalWawancara($id) {
+            $lamaranCount = Lamaran::all()->count();
+            $pelamarCount = User::all()->count();
+        $lamaran = Lamaran::all();
+        $pelamar = User::all();
+        $data = JadwalWawancara::where('id', $id)->get();
+    
+        return view('admin.jadwal_wawancara.edit', compact('lamaran', 'lamaranCount','pelamar', 'pelamarCount', 'data'));
+        }
+    
+    
+        public function updateJadwalWawancara(Request $request, $id){
+            $validasiData = $request->validate([
+                'id_lamaran' => 'required',
+                'id_user' => 'required',
+                'tanggal_tes' => 'required',
+                'jam' => 'required',
+                'lokasi' => 'required',
+            ]);
+    
+         
+           JadwalWawancara::where('id', $id)->update($validasiData);
+    
+           return redirect('/admin/jadwal_wawancara');
+        }
+
         public function deleteJadwalWawancara($id) {
             JadwalWawancara::destroy($id);
             return redirect('/admin/jadwal_wawancara')->with('status', 'Data berhasil dihapus.');
@@ -392,16 +893,103 @@ class AdminController extends Controller
             $atitude = $request->input('atitude');
             $grooming = $request->input('grooming');
             
-            $total = $ketegasan + $atitude + $grooming ;
+          // Nilai Asli Kelengkapan
+       if($ketegasan >= 90 && $ketegasan <= 100){
+        $nilaiasli_ketegasan = 5;
+        }else if($ketegasan >= 80){
+        $nilaiasli_ketegasan = 4;
+        }else if($ketegasan >= 70){
+        $nilaiasli_ketegasan = 3;
+        }else if($ketegasan >= 60){
+        $nilaiasli_ketegasan = 2;
+        }else if($ketegasan >= 50){
+        $nilaiasli_ketegasan = 1;
+    }
+
+    // Nilai Asli Kerapihan
+    if($atitude >= 90 && $atitude <= 100){
+        $nilaiasli_atitude = 5;
+    }else if($atitude >= 80){
+        $nilaiasli_atitude = 4;
+    }else if($atitude >= 70){
+        $nilaiasli_atitude = 3;
+    }else if($atitude >= 60){
+        $nilaiasli_atitude = 2;
+    }else if($atitude >= 50){
+        $nilaiasli_atitude = 1;
+    }
+    // Nilai Asli Kerapihan
+    if($grooming >= 90 && $grooming <= 100){
+        $nilaiasli_grooming = 5;
+    }else if($grooming >= 80){
+        $nilaiasli_grooming = 4;
+    }else if($grooming >= 70){
+        $nilaiasli_grooming = 3;
+    }else if($grooming >= 60){
+        $nilaiasli_grooming = 2;
+    }else if($grooming >= 50){
+        $nilaiasli_grooming = 1;
+    }
+    // Nilai Selisih
+
+    $nilaiselisih_ketegasan = $nilaiasli_ketegasan - 4;
+    $nilaiselisih_atitude = $nilaiasli_atitude - 5;
+    $nilaiselisih_grooming = $nilaiasli_grooming - 4;
+
+
+
+// Tabel Bobot
+    $bobot_tabel = array(
+        0 => 5,
+1 => 4.5,
+-1 => 4,
+2 => 3.5,
+-2 => 3,
+3 => 2.5,
+-3 => 2,
+4 => 1.5,
+-4 => 1
+);
+
+// Nilai Bobot
+$bobot_ketegasan = isset($bobot_tabel[$nilaiselisih_ketegasan]) ? $bobot_tabel[$nilaiselisih_ketegasan] : 0;
+$bobot_atitude = isset($bobot_tabel[$nilaiselisih_atitude]) ? $bobot_tabel[$nilaiselisih_atitude] : 0;
+$bobot_grooming = isset($bobot_tabel[$nilaiselisih_grooming]) ? $bobot_tabel[$nilaiselisih_grooming] : 0;
+
+// echo "Bobot Kelengkapan: " . $bobot_kelengkapan . "<br>";
+// echo "Bobot Kerapihan: " . $bobot_kerapihan . "<br>";
+// echo "Bobot Ijazah: " . $bobot_ijazah . "<br>";
     
-            $validasiData['total'] = $total;
-           
-            $wawancara = new Wawancara($validasiData);
-       
-         
-            $wawancara->save();
-            // $lowongan->tutupLowongan();
-    
+  // Perhitungan CF dan SF
+$nilai_cf = ($bobot_ketegasan + $bobot_atitude) / 2;
+$nilai_sf = $bobot_grooming;
+
+// Perhitungan Total
+$totalketerampilan = (0.6 * $nilai_cf) + (0.4 * $nilai_sf);
+
+// Nilai Asli
+$validasiData['nilaiasli_ketegasan'] = $nilaiasli_ketegasan;
+$validasiData['nilaiasli_atitude'] = $nilaiasli_atitude;
+$validasiData['nilaiasli_grooming'] = $nilaiasli_grooming;
+
+// Nilai Bobot
+$validasiData['nilaibobot_ketegasan'] = $nilaiasli_ketegasan;
+$validasiData['nilaibobot_atitude'] = $nilaiasli_atitude;
+$validasiData['nilaibobot_grooming'] = $nilaiasli_grooming;
+
+$validasiData['cf'] = $nilai_cf;
+$validasiData['sf'] = $nilai_sf;
+$validasiData['total'] = $totalketerampilan;
+
+
+    // $administrasi = new Administrasi($validasiData);
+
+ 
+    // $administrasi->save();
+    // // $lowongan->tutupLowongan();
+
+
+    Wawancara::create($validasiData);
     
             // Lowongan::create($validasiData);
     
@@ -422,21 +1010,119 @@ class AdminController extends Controller
 
         public function updateWawancara(Request $request, $id) {
 
+            $validasiData = $request->validate([
+                'id_lamaran' => 'required',
+                'id_jadwalWawancara' => 'required',
+                'id_user' => 'required',
+                'ketegasan' => 'required',
+                'atitude' => 'required',
+                'grooming' => 'required'
+            ]);
+
+        
+    
             $ketegasan = $request->input('ketegasan');
             $atitude = $request->input('atitude');
             $grooming = $request->input('grooming');
             
-            $total = $ketegasan + $atitude + $grooming ;
+          // Nilai Asli Kelengkapan
+       if($ketegasan >= 90 && $ketegasan <= 100){
+        $nilaiasli_ketegasan = 5;
+        }else if($ketegasan >= 80){
+        $nilaiasli_ketegasan = 4;
+        }else if($ketegasan >= 70){
+        $nilaiasli_ketegasan = 3;
+        }else if($ketegasan >= 60){
+        $nilaiasli_ketegasan = 2;
+        }else if($ketegasan >= 50){
+        $nilaiasli_ketegasan = 1;
+    }
 
-        Wawancara::where('id', $id)-> update([
-            'id_lamaran' => $request->id_lamaran,
-            'id_jadwalWawancara' => $request->id_jadwalWawancara,
-            'id_user' => $request->id_user,
-            'ketegasan' => $request->ketegasan,
-            'atitude' => $request->atitude,
-            'grooming' => $request->grooming,
-            'total' => $total,
-        ]);
+    // Nilai Asli Kerapihan
+    if($atitude >= 90 && $atitude <= 100){
+        $nilaiasli_atitude = 5;
+    }else if($atitude >= 80){
+        $nilaiasli_atitude = 4;
+    }else if($atitude >= 70){
+        $nilaiasli_atitude = 3;
+    }else if($atitude >= 60){
+        $nilaiasli_atitude = 2;
+    }else if($atitude >= 50){
+        $nilaiasli_atitude = 1;
+    }
+    // Nilai Asli Kerapihan
+    if($grooming >= 90 && $grooming <= 100){
+        $nilaiasli_grooming = 5;
+    }else if($grooming >= 80){
+        $nilaiasli_grooming = 4;
+    }else if($grooming >= 70){
+        $nilaiasli_grooming = 3;
+    }else if($grooming >= 60){
+        $nilaiasli_grooming = 2;
+    }else if($grooming >= 50){
+        $nilaiasli_grooming = 1;
+    }
+    // Nilai Selisih
+
+    $nilaiselisih_ketegasan = $nilaiasli_ketegasan - 4;
+    $nilaiselisih_atitude = $nilaiasli_atitude - 5;
+    $nilaiselisih_grooming = $nilaiasli_grooming - 4;
+
+
+
+// Tabel Bobot
+    $bobot_tabel = array(
+        0 => 5,
+1 => 4.5,
+-1 => 4,
+2 => 3.5,
+-2 => 3,
+3 => 2.5,
+-3 => 2,
+4 => 1.5,
+-4 => 1
+);
+
+// Nilai Bobot
+$bobot_ketegasan = isset($bobot_tabel[$nilaiselisih_ketegasan]) ? $bobot_tabel[$nilaiselisih_ketegasan] : 0;
+$bobot_atitude = isset($bobot_tabel[$nilaiselisih_atitude]) ? $bobot_tabel[$nilaiselisih_atitude] : 0;
+$bobot_grooming = isset($bobot_tabel[$nilaiselisih_grooming]) ? $bobot_tabel[$nilaiselisih_grooming] : 0;
+
+// echo "Bobot Kelengkapan: " . $bobot_kelengkapan . "<br>";
+// echo "Bobot Kerapihan: " . $bobot_kerapihan . "<br>";
+// echo "Bobot Ijazah: " . $bobot_ijazah . "<br>";
+    
+  // Perhitungan CF dan SF
+$nilai_cf = ($bobot_ketegasan + $bobot_atitude) / 2;
+$nilai_sf = $bobot_grooming;
+
+// Perhitungan Total
+$totalketerampilan = (0.6 * $nilai_cf) + (0.4 * $nilai_sf);
+
+// Nilai Asli
+$validasiData['nilaiasli_ketegasan'] = $nilaiasli_ketegasan;
+$validasiData['nilaiasli_atitude'] = $nilaiasli_atitude;
+$validasiData['nilaiasli_grooming'] = $nilaiasli_grooming;
+
+// Nilai Bobot
+$validasiData['nilaibobot_ketegasan'] = $nilaiasli_ketegasan;
+$validasiData['nilaibobot_atitude'] = $nilaiasli_atitude;
+$validasiData['nilaibobot_grooming'] = $nilaiasli_grooming;
+
+$validasiData['cf'] = $nilai_cf;
+$validasiData['sf'] = $nilai_sf;
+$validasiData['total'] = $totalketerampilan;
+
+
+    // $administrasi = new Administrasi($validasiData);
+
+ 
+    // $administrasi->save();
+    // // $lowongan->tutupLowongan();
+
+
+
+        Wawancara::where('id', $id)-> update($validasiData);
 
         return redirect('/admin/wawancara')->with('status', 'Data berhasil diubah.');
 

@@ -21,7 +21,15 @@ return new class extends Migration
             $table->integer('ketegasan');
             $table->integer('atitude');
             $table->integer('grooming');
-            $table->integer('total');
+            $table->decimal('nilaiasli_ketegasan', 8,2);
+            $table->decimal('nilaiasli_atitude', 8,2);
+            $table->decimal('nilaiasli_grooming', 8,2);
+            $table->decimal('nilaibobot_ketegasan', 8,2);
+            $table->decimal('nilaibobot_atitude', 8,2);
+            $table->decimal('nilaibobot_grooming', 8,2);
+            $table->decimal('cf', 8,2);
+            $table->decimal('sf', 8,2);
+            $table->decimal('total', 8,2);
        
             $table->foreign('id_lamaran')->references('id')->on('lamarans')->onDelete('cascade');
             $table->foreign('id_jadwalWawancara')->references('id')->on('jadwal_wawancaras')->onDelete('cascade');
