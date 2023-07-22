@@ -20,7 +20,13 @@ return new class extends Migration
             $table->unsignedBigInteger('id_user');
             $table->integer('psikotes');
             $table->integer('ketangkasan');
-            $table->integer('total');
+            $table->decimal('nilaiasli_psikotes', 8,2);
+            $table->decimal('nilaiasli_ketangkasan', 8,2);
+            $table->decimal('nilaibobot_psikotes', 8,2);
+            $table->decimal('nilaibobot_ketangkasan', 8,2);
+            $table->decimal('cf', 8,2);
+            $table->decimal('sf', 8,2);
+            $table->decimal('total', 8,2);
        
             $table->foreign('id_lamaran')->references('id')->on('lamarans')->onDelete('cascade');
             $table->foreign('id_jadwalKeterampilan')->references('id')->on('jadwal_keterampilans')->onDelete('cascade');

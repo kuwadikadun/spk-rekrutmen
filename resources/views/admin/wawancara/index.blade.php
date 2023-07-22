@@ -30,6 +30,15 @@
                                 <th>Ketegasan</th>
                                 <th>Atitude</th>
                                 <th>Grooming</th>
+                                <th>Nilai Asli Ketegasan</th>
+                                <th>Nilai Asli Atitude</th>
+                                <th>Nilai Asli Grooming</th>
+                                <th>Nilai Bobot Ketegasan</th>
+                                <th>Nilai Bobot Atitude</th>
+                                <th>Nilai Bobot Grooming</th>
+                                <th>CF</th>
+                                <th>SF</th>
+                                <th>Grooming</th>
                                 <th>Total</th>
                                 <th>Action</th>
                                 
@@ -55,6 +64,14 @@
                                 <td>{{$item->ketegasan}}</td>
                                 <td>{{$item->atitude}}</td>
                                 <td>{{$item->grooming}}</td>
+                                <td>{{$item->nilaiasli_ketegasan}}</td>
+                                <td>{{$item->nilaiasli_atitude}}</td>
+                                <td>{{$item->nilaiasli_grooming}}</td>
+                                <td>{{$item->nilaibobot_ketegasan}}</td>
+                                <td>{{$item->nilaibobot_atitude}}</td>
+                                <td>{{$item->nilaibobot_grooming}}</td>
+                                <td>{{$item->cf}}</td>
+                                <td>{{$item->sf}}</td>
                                 <td>{{$item->total}}</td>
                                 <td>
                                     <a href="{{ url('/admin/wawancara/edit', $item->id) }}" class="btn  btn-warning">Edit</a>

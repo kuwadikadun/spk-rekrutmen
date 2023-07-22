@@ -30,6 +30,14 @@
                                 <th>Kelengkapan</th>
                                 <th>Kerapihan</th>
                                 <th>Nilai Ijazah</th>
+                                <th>Nilai Asli Kelengkapan</th>
+                                <th>Nilai Asli Kerapihan</th>
+                                <th>Nilai Asli Ijazah</th>
+                                <th>Nilai Bobot Kelengkapan</th>
+                                <th>Nilai Bobot Kerapihan</th>
+                                <th>Nilai Bobot Ijazah</th>
+                                <th>CF</th>
+                                <th>SF</th>
                                 <th>Total</th>
                                 <th>Action</th>
                             </tr>
@@ -48,6 +56,14 @@
                                 <td>{{$item->kelengkapan}}</td>
                                 <td>{{$item->kerapihan}}</td>
                                 <td>{{$item->nilai_ijazah}}</td>
+                                <td>{{$item->nilaiasli_kelengkapan}}</td>
+                                <td>{{$item->nilaiasli_kerapihan}}</td>
+                                <td>{{$item->nilaiasli_ijazah}}</td>
+                                <td>{{$item->nilaibobot_kelengkapan}}</td>
+                                <td>{{$item->nilaibobot_kerapihan}}</td>
+                                <td>{{$item->nilaibobot_ijazah}}</td>
+                                <td>{{$item->cf}}</td>
+                                <td>{{$item->sf}}</td>
                                 <td>{{$item->total}}</td>
                                 <td>
                                     <a href="{{ url('/admin/administrasi/edit', $item->id) }}" class="btn btn-warning">Edit</a>

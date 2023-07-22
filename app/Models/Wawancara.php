@@ -16,6 +16,14 @@ class Wawancara extends Model
         'ketegasan',
         'atitude',
         'grooming',
+        'nilaiasli_ketegasan',
+        'nilaiasli_atitude',
+        'nilaiasli_grooming',
+        'nilaibobot_ketegasan',
+        'nilaibobot_atitude',
+        'nilaibobot_grooming',
+        'cf',
+        'sf',
         'total',
      
     ];
