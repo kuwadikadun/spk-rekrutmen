@@ -40,7 +40,7 @@ class PelamarLoginController extends Controller
         if(Auth::attempt($loginPelamar)){
             return redirect('/pelamar/dashboard')->with('status', 'Berhasil masuk');
         }else {
-            return redirect('/')->withErrors('Email atau Password Salah')->withInput();
+            return redirect('/pelamar')->withErrors('Email atau Password Salah')->withInput();
         }
     }
 
@@ -100,7 +100,8 @@ class PelamarLoginController extends Controller
         $pas_foto->move(public_path().'/img',$filepas_foto);
         // $dtUpload->save();
 
-        $role = "Pelamar";
+        // $role = "Pelamar";
+        $role = "user";
         $validasiData['role'] = $role;
 
         $user =  User::create($validasiData);
@@ -154,5 +155,9 @@ class PelamarLoginController extends Controller
         // ]);
 
         // return redirect('/pelamar/profil');
+    }
+
+    public function dashboard() {
+        return view('loginPelamar.dashboard');
     }
 }

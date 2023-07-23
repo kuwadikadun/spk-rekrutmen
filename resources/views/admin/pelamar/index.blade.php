@@ -1,6 +1,6 @@
 @extends('admin.layout.master')
 
-@section('title', 'Lamaran')
+@section('title', 'Pelamar')
 
 @section('content')
 <div class="row">
@@ -45,11 +45,7 @@
                                 <td>{{$item->no_telpon}}</td>
                                 {{-- <td>{{$item->catatan}}</td> --}}
                                 <td>
-                                    <form action="{{url('/admin/lamaran/view', $item->id)}}" method="post" class="d-inline-block">
-                                        @csrf
-                                        @method('DELETE')
-                                        <input type="submit" class="btn btn-primary" value="View">
-                                    </form>
+                                    <a href="{{url('/admin/pelamar', $item->id)}}" class="btn btn-primary">View</a>
                                 </td>
                       
                             </tr>

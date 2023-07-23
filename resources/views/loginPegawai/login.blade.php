@@ -1,5 +1,7 @@
 @extends('loginPegawai.layout')
 
+@section('title', 'Login Pegawai')
+
 @section('login')
 
 @if ($errors->any())
@@ -36,7 +38,8 @@
                                     @enderror
                                     <button class="btn login-form__btn submit w-100">Sign In</button>
                                 </form>
-                                <p class="mt-5 login-form__footer">Dont have account? <a href="{{ url('/register') }}" class="text-primary">Sign Up</a> now</p>
+                                <p class="mt-5 login-form__footer">Tidak memiliki akun? <a href="{{ url('/register') }}" class="text-primary">Daftar</a> Sekarang</p>
+                                <p class="mt-3 login-form__footer">Anda seorang pelamar? <a href="{{ url('/login') }}" class="text-primary">Klik</a> disini.</p>
                             </div>
                         </div>
                     </div>

@@ -1,5 +1,7 @@
 @extends('loginPelamar.layout')
 
+@section('title','Register')
+
 @section('login')
     <div class="login-form-bg h-100">
         <div class="container h-100">

@@ -18,7 +18,8 @@ use App\Http\Controllers\PelamarController;
 //     return view('welcome');
 // });
 
-Route::get('/', [App\Http\Controllers\PelamarLoginController::class, 'showLogin']);
+Route::get('/', [App\Http\Controllers\PelamarLoginController::class, 'dashboard']);
+Route::get('/login', [App\Http\Controllers\PelamarLoginController::class, 'showLogin']);
 Route::post('/login/pelamar',  [App\Http\Controllers\PelamarLoginController::class, 'login']);
 Route::post('/logout/pelamar', [App\Http\Controllers\PelamarLoginController::class, 'logout']);
 
@@ -27,7 +28,7 @@ Route::post('/register/store', [App\Http\Controllers\PelamarLoginController::cla
 
 
 
-Route::get('/login/pegawai', [App\Http\Controllers\PegawaiLoginController::class, 'showLogin']);
+Route::get('/pegawai', [App\Http\Controllers\PegawaiLoginController::class, 'showLogin']);
 Route::post('/login/pegawai',  [App\Http\Controllers\PegawaiLoginController::class, 'login']);
 Route::post('/logout/pegawai', [App\Http\Controllers\PegawaiLoginController::class, 'logout']);
 // Route::get('/', function () {
@@ -120,7 +121,7 @@ Route::get('/admin/lamaran/{$id}', [App\Http\Controllers\AdminController::class,
 
 // Admin Pelamar
 Route::get('/admin/pelamar', [App\Http\Controllers\AdminController::class, 'pelamar']);
-Route::get('/admin/pelamar/{$id}', [App\Http\Controllers\AdminController::class, 'viewPelamar']);
+Route::get('/admin/pelamar/{id}', [App\Http\Controllers\AdminController::class, 'viewPelamar']);
 
 
 

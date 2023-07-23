@@ -117,11 +117,17 @@ class AdminController extends Controller
 
     // Pelamar
     public function pelamar(){
-        $user = User::all();
+        $user = User::where('role', 'user')->get();
         return view('admin.pelamar.index', compact('user'));
     }
 
+    public function viewPelamar($id){
+        $user = User::where('id', $id)->first();
 
+        // return $user;
+
+        return view('admin.pelamar.view', compact('user'));
+    }
 
 
 
