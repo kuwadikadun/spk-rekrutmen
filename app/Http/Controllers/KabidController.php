@@ -1158,7 +1158,7 @@ $validasiData['total'] = $totalketerampilan;
                 $total_admin = $item->total_admin;
                 $total_terampil = $item->total_terampil;
                 $total_wawancara = $item->total_wawancara;
-                $total_semua = $total_admin + $total_terampil + $total_wawancara;
+                $total_semua = 0.3 * $total_admin + 0.4 * $total_terampil + 0.3 * $total_wawancara;
 
                 $result = [
                     'name' => $name,

@@ -115,26 +115,29 @@
                     <div class="row d-flex mt-4 ml-5 mr-5 text-center">
                       <div class="col inside-content">
                         <h5>Tentang kami</h5>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit doloremque unde eos sit ex, iste possimus commodi sequi voluptatibus, deleniti nemo quaerat ipsam iusto dignissimos eveniet exercitationem labore officia magni.</p>
+                        <p>Provinsi Banten yang letaknya sangat strategis dalam wilayah negara kesatuan Republik Indonesia memiliki berbagai keunggulan. Namun disisi lain Provinsi Banten memiliki tingkat ancaman bencana yang tidak sedikit, dari 14 (empat belas) bencana yang tercantum dalam rencana nasional penanggulangan bencana semuanya berpotensi terdapat di Provinsi Banten.   Paradigma Penanggulangan bencana yang telah bergeser dari responsif preventif, menekankan tentang pentingnya pengurangan risiko bencana sebagaimana telah diamanatkan dalam Undang-undang No. 24 tahun 2007 tentang Penanggulangan Bencana. Salah satu upaya Pengurangan risiko bencana, yaitu dengan memberikan informasi sedini mungkin tentang langkah-langkah penanggulangan bencana kepada masyarakat.</p>
                       </div>
                       <div class="col inside-content">
-                        <h5>Visi dan Misi</h5>
-                        <div class="text-left">
-                          <p>- Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam ea commodi cum similique fuga placeat ipsa impedit quas cumque inventore.</p>
-                          <p>- Lorem ipsum dolor sit, amet consectetur adipisicing elit. At, eius.</p>
-                          <p>- Lorem ipsum dolor sit amet.</p>
-                          <p>- Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, expedita! Earum impedit optio dignissimos nobis velit, fuga laboriosam distinctio similique deserunt mollitia vel ullam! Placeat itaque ut eius consectetur aliquid.</p>
-                          <p>- Lorem ipsum dolor sit, amet consectetur adipisicing elit. At, eius.</p>
+                        <h5>Visi</h5>
+                        <div class="text-center">
+                          <p>”Tangguh dan Profesional dalam Penanggulangan Bencana”.</p>
+                        </div>
+                        <h5>Misi</h5>
+                        <div class="text-center">
+                          <ul>
+                            <li>Menciptakan Tata kelola pemerintah yang baik (Good Governance).</li>
+                            <li>Membangun sistem penyelenggaraan Penanggulangan Bencana  yang Terpadu, Efektif dan Efesien.</li>
+                          </ul>
                         </div>
                       </div>
                       <div class="col inside-content">
-                        <h5>Bidang</h5>
+                        <h5>Bidang - Bidang</h5>
+                        <h6>Bidang Kesekretariatan</h6>
                         <div class="text-left">
-                          <p>- Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam ea commodi cum similique fuga placeat ipsa impedit quas cumque inventore.</p>
-                          <p>- Lorem ipsum dolor sit, amet consectetur adipisicing elit. At, eius.</p>
-                          <p>- Lorem ipsum dolor sit amet.</p>
-                          <p>- Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, expedita! Earum impedit optio dignissimos nobis velit, fuga laboriosam distinctio similique deserunt mollitia vel ullam! Placeat itaque ut eius consectetur aliquid.</p>
-                          <p>- Lorem ipsum dolor sit, amet consectetur adipisicing elit. At, eius.</p>
+                          <p>- Bidang pencegahan dan kesiapsiagaan</p>
+                          <p>- Bidang Penanganan kedaruratan.</p>
+                          <p>- Bidang rehabiliasi dan rekontruksi</p>
+                          <p>- Bidang Pemadam Kebakaran</p>
                         </div>
                       </div>
                     </div>

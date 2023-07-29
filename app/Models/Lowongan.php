@@ -27,8 +27,15 @@ class Lowongan extends Model
     }
 
     public function Lamaran(){
-        return $this->hasMany(Lamaran::class);
+        return $this->hasMany(Lamaran::class, 'id_lowongan', 'id');
     }
 
+    public function peringkat(){
+        return $this->hasMany(Peringkat::class, 'id_lowongan', 'id');
+    }
 
+    public function users()
+{
+    return $this->belongsToMany(User::class, 'lamarans', 'id_lowongan', 'id_user')->withTimestamps();
+}
 }

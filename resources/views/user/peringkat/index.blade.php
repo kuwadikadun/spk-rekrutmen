@@ -11,7 +11,8 @@
                 <div class="card-title">
                     <h4>Peringkat</h4>
                 </div>
-                <div class="table-responsive">
+                
+                {{-- <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -39,7 +40,38 @@
                             @endfor
                         </tbody>
                     </table>
-                </div>
+                </div> --}}
+
+                {{-- user/peringkat/index.blade.php --}}
+
+@foreach ($sortedData as $namaBidang => $users)
+<h2>{{ $namaBidang }}</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>No Telpon</th>
+            <th>Total Admin</th>
+            <th>Total Terampil</th>
+            <th>Total Wawancara</th>
+            <th>Total Semua</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($users as $user)
+            <tr>
+                <td>{{ $user['name'] }}</td>
+                <td>{{ $user['no_telpon'] }}</td>
+                <td>{{ $user['total_admin'] }}</td>
+                <td>{{ $user['total_terampil'] }}</td>
+                <td>{{ $user['total_wawancara'] }}</td>
+                <td>{{ $user['total_semua'] }}</td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
+@endforeach
+
             </div>
         </div>
     </div>

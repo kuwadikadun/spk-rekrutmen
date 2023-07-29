@@ -90,4 +90,12 @@ class User extends Authenticatable
     public function Peringkat(){
         return $this->hasMany(Peringkat::class);
     }
+
+    // User.php
+
+    public function lowongans()
+{
+    return $this->belongsToMany(Lowongan::class, 'lamarans', 'id_user', 'id_lowongan')->withTimestamps();
+}
+
 }
