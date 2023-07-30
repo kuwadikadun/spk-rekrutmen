@@ -1,4 +1,4 @@
-@extends('user.layout.master')
+@extends('admin.layout.master')
 
 @section('title', 'Kirim Lamaran')
 
@@ -35,19 +35,19 @@
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="posisi">Nama Pelamar</label>
                             <div class="col-lg-6">
-                                <input type="text" class="form-control" value="{{$item->id_user}}" readonly id="id_user" name="id_user" placeholder="Masukkan ID Pelamar...">
+                                <input type="text" class="form-control" value="{{$item->name}}" readonly id="id_user" name="id_user" placeholder="Masukkan ID Pelamar...">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="tanggal_lamaran">Tanggal Lamaran</label>
                             <div class="col-lg-6">
-                                <input type="text" class="form-control" value="{{$item->tanggal_lamaran}}" id="tanggal_lamaran" name="tanggal_lamaran" disabled>
+                                <input type="text" class="form-control" value="@php $tanggalLamaran = date('d F Y', strtotime($item->tanggal_lamaran)) @endphp {{$tanggalLamaran}}" id="tanggal_lamaran" name="tanggal_lamaran" disabled>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="kualifikasi">Promosikan Diri Anda!</label>
                             <div class="col-lg-6">
-                                <textarea type="text" class="form-control"  value="{{old('catatan')}}" id="catatan" name="catatan" placeholder="Beritahu kami mengapa Anda paling cocok untuk posisi ini. Sebutkan keterampilan khusus dan bagaimana Anda berkonstribusi. Hindari hal generik seperti Saya bertanggung jawab." style="height: 200px"></textarea>
+                                <textarea readonly disabled type="text" class="form-control" id="catatan" name="catatan" placeholder="Beritahu kami mengapa Anda paling cocok untuk posisi ini. Sebutkan keterampilan khusus dan bagaimana Anda berkonstribusi. Hindari hal generik seperti Saya bertanggung jawab." style="height: 200px">{{$item->catatan}}</textarea>
                             </div>
                         </div>
                         {{-- <div class="form-group row">
@@ -57,8 +57,7 @@
                             </div>
                         </div> --}}
                        
-                        <button type="submit" class="btn btn-primary">Kirim</button>
-                        <a href="{{ url('/pelamar/lowongan') }}" class="btn btn-danger">Batal</a>
+                        <a href="{{ url('/admin/lamaran') }}" class="btn btn-danger">Kembali</a>
                     {{-- </form> --}}
                 </div>
             </div>

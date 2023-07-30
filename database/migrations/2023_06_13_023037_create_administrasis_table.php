@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_lamaran');
             $table->unsignedBigInteger('id_user');
-            $table->integer('kelengkapan');
-            $table->integer('kerapihan');
-            $table->integer('nilai_ijazah');
+            $table->integer('kelengkapan', 6);
+            $table->integer('kerapihan', 6);
+            $table->integer('nilai_ijazah', 6);
             $table->decimal('nilaiasli_kelengkapan', 8,2);
             $table->decimal('nilaiasli_kerapihan', 8,2);
             $table->decimal('nilaiasli_ijazah', 8,2);

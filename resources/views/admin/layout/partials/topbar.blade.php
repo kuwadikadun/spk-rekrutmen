@@ -7,7 +7,7 @@
                     <b class="logo-abbr"><img src="{{ asset('assets/img/bpbdkabserang.png') }}" alt=""> </b>
                     <span class="logo-compact"><img src="{{ asset('./assets/img/bpbdkabserang.png') }}" alt=""></span>
                     <span class="brand-title">
-                        <img src="{{ asset('assets/img/bpbdkabserang.png') }}" alt="" width="54px" height="80px" style="margin-left: 20px; margin-top:-20px">
+                        <img src="{{ asset('assets/img/bpbdkabserang.png') }}" alt="" width="70px" style="margin-top: -20px; margin-left: 50px">
                     </span>
                 </a>
             </div>
@@ -38,15 +38,10 @@
                     <ul class="clearfix">
                         <li class="icons dropdown">
                             <div class="user-img c-pointer position-relative"   data-toggle="dropdown">
-                                <span class="activity active"></span>
-                                <img src="{{ asset('assets/images/user/1.png') }}" height="40" width="40" alt="">
-                            </div>
-                            <div class="drop-down dropdown-profile animated fadeIn dropdown-menu">
-                                <div class="dropdown-content-body">
-                                    <ul>
-                                        <li><a href="page-login.html"><i class="icon-key"></i> <span>Logout</span></a></li>
-                                    </ul>
-                                </div>
+                                <form action="{{ url('/logout/pegawai') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger"></i> <span>Logout</span></button>
+                                </form>
                             </div>
                         </li>
                     </ul>

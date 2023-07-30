@@ -37,7 +37,7 @@
                         <tbody>
                             @foreach ($data as $item)
                             <tr>                              
-                                <th>{{ $loop->iteration }}</th>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{$item->nama_bidang}} </td>
                                 <td>{{ $item->posisi}}</td>
                                 <td>
@@ -52,11 +52,7 @@
                                 <td>{{$item->status}}</td>
                                 {{-- <td>{{$item->catatan}}</td> --}}
                                 <td>
-                                    <form action="{{url('/admin/lamaran/view', $item->id)}}" method="post" class="d-inline-block">
-                                        @csrf
-                                        @method('DELETE')
-                                        <input type="submit" class="btn btn-primary" value="View">
-                                    </form>
+                                    <a href="{{ url('admin/lamaran', $item->id) }}" class="btn btn-primary">View</a>
                                 </td>
                       
                             </tr>

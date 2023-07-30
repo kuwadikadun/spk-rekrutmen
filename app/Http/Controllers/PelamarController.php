@@ -332,6 +332,39 @@ class PelamarController extends Controller
 
     // YourController.php
 
+// public function peringkat()
+// {
+//     $lowongans = Lowongan::all();
+
+//     $sortedData = [];
+
+//     foreach ($lowongans as $lowongan) {
+//         $users = $lowongan->users()
+//             ->join('administrasis', 'users.id', '=', 'administrasis.id_user')
+//             ->join('keterampilans', 'users.id', '=', 'keterampilans.id_user')
+//             ->join('wawancaras', 'users.id', '=', 'wawancaras.id_user')
+//             ->select('users.name', 'users.no_telpon', 'administrasis.total AS total_admin', 'keterampilans.total AS total_terampil', 'wawancaras.total AS total_wawancara')
+//             ->get();
+
+//         foreach ($users as $user) {
+//             $total_semua = 0.3 * $user->total_admin + 0.4 * $user->total_terampil + 0.3 * $user->total_wawancara;
+
+//             $result = [
+//                 'name' => $user->name,
+//                 'no_telpon' => $user->no_telpon,
+//                 'total_admin' => $user->total_admin,
+//                 'total_terampil' => $user->total_terampil,
+//                 'total_wawancara' => $user->total_wawancara,
+//                 'total_semua' => $total_semua,
+//             ];
+
+//             $sortedData[$lowongan->nama_bidang][] = $result;
+//         }
+//     }
+
+//     return view('user.peringkat.index', compact('sortedData'));
+// }
+
 public function peringkat()
 {
     $lowongans = Lowongan::all();
@@ -358,11 +391,17 @@ public function peringkat()
                 'total_semua' => $total_semua,
             ];
 
-            $sortedData[$lowongan->nama_bidang][] = $result;
+            // $sortedData[$lowongan->nama_bidang][] = $result;
+
+            $sortedData[$lowongan->nama_bidang][] = collect($result)->sortByDesc('total_semua')->values()->all();
         }
     }
 
-    return view('user.peringkat.index', compact('sortedData'));
+    // $sortedData = collect($sortedData)->sortByDesc('total_semua')->values()->all();
+
+    // return $sortedData;
+
+    return view('admin.peringkat.index', compact('sortedData'));
 }
 
 }

@@ -7,7 +7,7 @@
                     <b class="logo-abbr"><img src="{{ asset('assets/img/bpbdkabserang.png') }}" alt=""> </b>
                     <span class="logo-compact"><img src="{{ asset('./assets/img/bpbdkabserang.png') }}" alt=""></span>
                     <span class="brand-title">
-                        <img src="{{ asset('assets/img/bpbdkabserang.png') }}" alt="" width="54px" height="80px" style="margin-left: 20px; margin-top:-20px">
+                        <img src="{{ asset('assets/img/bpbdkabserang.png') }}" alt="" width="70px" style="margin-top: -20px; margin-left: 50px">
                     </span>
                 </a>
             </div>

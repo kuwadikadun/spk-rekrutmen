@@ -116,7 +116,7 @@ Route::delete('/admin/lowongan/delete/{id}', [App\Http\Controllers\AdminControll
 
 // Admin Lamaran
 Route::get('/admin/lamaran', [App\Http\Controllers\AdminController::class, 'lamaran']);
-Route::get('/admin/lamaran/{$id}', [App\Http\Controllers\AdminController::class, 'viewLamaran']);
+Route::get('/admin/lamaran/{id}', [App\Http\Controllers\AdminController::class, 'viewLamaran']);
 
 
 // Admin Pelamar
@@ -240,12 +240,12 @@ Route::delete('/kabid/administrasi/delete/{id}', [App\Http\Controllers\KabidCont
 // Route::get('/admin/administrasi/show/{id}', [App\Http\Controllers\AdminController::class, 'showAdministrasi']);
 
 // Admin Jadwal Keterampilan
-Route::get('/kabid/jadwal_keterampilan', [App\Http\Controllers\KabidController::class, 'indexJadwalKeterampilan']);
-Route::get('/kabid/jadwal_keterampilan/create', [App\Http\Controllers\KabidController::class, 'createJadwalKeterampilan']);
-Route::post('/kabid/jadwal_keterampilan/store', [App\Http\Controllers\KabidController::class, 'storeJadwalKeterampilan']);
-Route::get('/kabid/jadwal_keterampilan/edit/{id}', [App\Http\Controllers\KabidController::class, 'editJadwalKeterampilan']);
-Route::patch('/kabid/jadwal_keterampilan/update/{id}', [App\Http\Controllers\KabidController::class, 'updateJadwalKeterampilan']);
-Route::delete('/kabid/jadwal_keterampilan/delete/{id}', [App\Http\Controllers\KabidController::class, 'deleteJadwalKeterampilan']);
+// Route::get('/kabid/jadwal_keterampilan', [App\Http\Controllers\KabidController::class, 'indexJadwalKeterampilan']);
+// Route::get('/kabid/jadwal_keterampilan/create', [App\Http\Controllers\KabidController::class, 'createJadwalKeterampilan']);
+// Route::post('/kabid/jadwal_keterampilan/store', [App\Http\Controllers\KabidController::class, 'storeJadwalKeterampilan']);
+// Route::get('/kabid/jadwal_keterampilan/edit/{id}', [App\Http\Controllers\KabidController::class, 'editJadwalKeterampilan']);
+// Route::patch('/kabid/jadwal_keterampilan/update/{id}', [App\Http\Controllers\KabidController::class, 'updateJadwalKeterampilan']);
+// Route::delete('/kabid/jadwal_keterampilan/delete/{id}', [App\Http\Controllers\KabidController::class, 'deleteJadwalKeterampilan']);
 // Route::get('/admin/jadwal_keterampilan/show/{id}', [App\Http\Controllers\AdminController::class, 'showJadwalKeterampilan']);
 
 

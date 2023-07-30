@@ -113,9 +113,9 @@
 
                   <div class="tombol-a">
                     <div class="row d-flex mt-4 ml-5 mr-5 text-center">
-                      <div class="col inside-content">
+                      <div class="col inside-content" style="padding: 30px">
                         <h5>Tentang kami</h5>
-                        <p>Provinsi Banten yang letaknya sangat strategis dalam wilayah negara kesatuan Republik Indonesia memiliki berbagai keunggulan. Namun disisi lain Provinsi Banten memiliki tingkat ancaman bencana yang tidak sedikit, dari 14 (empat belas) bencana yang tercantum dalam rencana nasional penanggulangan bencana semuanya berpotensi terdapat di Provinsi Banten.   Paradigma Penanggulangan bencana yang telah bergeser dari responsif preventif, menekankan tentang pentingnya pengurangan risiko bencana sebagaimana telah diamanatkan dalam Undang-undang No. 24 tahun 2007 tentang Penanggulangan Bencana. Salah satu upaya Pengurangan risiko bencana, yaitu dengan memberikan informasi sedini mungkin tentang langkah-langkah penanggulangan bencana kepada masyarakat.</p>
+                        <p style="text-align: justify;">Provinsi Banten yang letaknya sangat strategis dalam wilayah negara kesatuan Republik Indonesia memiliki berbagai keunggulan. Namun disisi lain Provinsi Banten memiliki tingkat ancaman bencana yang tidak sedikit, dari 14 (empat belas) bencana yang tercantum dalam rencana nasional penanggulangan bencana semuanya berpotensi terdapat di Provinsi Banten.   Paradigma Penanggulangan bencana yang telah bergeser dari responsif preventif, menekankan tentang pentingnya pengurangan risiko bencana sebagaimana telah diamanatkan dalam Undang-undang No. 24 tahun 2007 tentang Penanggulangan Bencana. Salah satu upaya Pengurangan risiko bencana, yaitu dengan memberikan informasi sedini mungkin tentang langkah-langkah penanggulangan bencana kepada masyarakat.</p>
                       </div>
                       <div class="col inside-content">
                         <h5>Visi</h5>
@@ -154,7 +154,7 @@
                       <h4>Selamat Datang</h4>
                       <h4>Sistem Penerimaan Pegawai</h4>
                       <h4>Badan Penanggulangan Bencana Daerah Kabupaten Serang</h4>
-                      <h4 class="mt-4 h2">Mari Berkarir Bersama Kami</h4>
+                      {{-- <h4 class="mt-4 h2">Mari Berkarir Bersama Kami</h4> --}}
                     </div>
                   </div>
                 </div>
