@@ -20,11 +20,11 @@
                             <i class="icon-notebook menu-icon"></i><span class="nav-text">Lowongan</span>
                         </a>
                     </li>
-                    <li>
+                    {{-- <li>
                         <a href="{{ url('/pelamar/lamaran') }}" aria-expanded="false">
                             <i class="icon-notebook menu-icon"></i><span class="nav-text">Lamaran</span>
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="mega-menu mega-menu-sm">
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="icon-trophy menu-icon"></i><span class="nav-text">Jadwal Tes</span>
