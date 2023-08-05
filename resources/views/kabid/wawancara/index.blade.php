@@ -9,7 +9,7 @@
             <div class="card-body">
                 <div class="card-title">
                     <h4>Data Nilai Wawancara</h4>
-                    <a href="{{ url('/admin/wawancara/create') }}" class="btn btn-primary">Tambah Data</a>
+                    {{-- <a href="{{ url('/admin/wawancara/create') }}" class="btn btn-primary">Tambah Data</a> --}}
                 </div>
                 @if (session('status'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -38,9 +38,8 @@
                                 <th>Nilai Bobot Grooming</th>
                                 <th>CF</th>
                                 <th>SF</th>
-                                <th>Grooming</th>
                                 <th>Total</th>
-                                <th>Action</th>
+                                {{-- <th>Action</th> --}}
                                 
                             </tr>
                         </thead>
@@ -73,14 +72,14 @@
                                 <td>{{$item->cf}}</td>
                                 <td>{{$item->sf}}</td>
                                 <td>{{$item->total}}</td>
-                                <td>
+                                {{-- <td>
                                     <a href="{{ url('/admin/wawancara/edit', $item->id) }}" class="btn  btn-warning">Edit</a>
                                     <form action="{{url('/admin/wawancara/delete', $item->id)}}" method="post" class="d-inline-block">
                                         @csrf
                                         @method('DELETE')
                                         <input type="submit" class="btn btn-danger" value="Hapus">
                                     </form>
-                                </td>
+                                </td> --}}
                       
                             </tr>
                             @endforeach     

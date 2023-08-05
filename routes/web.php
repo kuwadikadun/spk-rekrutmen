@@ -101,7 +101,7 @@ Route::patch('/pelamar/profil/update/{id}', [App\Http\Controllers\PelamarControl
 
 // Admin
 Route::get('/admin', [App\Http\Controllers\AdminController::class, 'dashboard']);
-Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'dashboard']);
+Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'dashboardLowongan']);
 
 
 // Admin Lowongan
@@ -193,7 +193,7 @@ Route::get('/admin/peringkat', [App\Http\Controllers\AdminController::class, 'pe
 //Kabid
 // Admin
 Route::get('/kabid', [App\Http\Controllers\KabidController::class, 'dashboard']);
-Route::get('/kabid/dashboard', [App\Http\Controllers\KabidController::class, 'dashboard']);
+Route::get('/kabid/dashboard', [App\Http\Controllers\KabidController::class, 'dashboardLowongan']);
 
 
 // Admin Lowongan
@@ -280,3 +280,4 @@ Route::get('/kabid/wawancara/show/{id}', [App\Http\Controllers\KabidController::
 
 // Peringkat
 Route::get('/kabid/peringkat', [App\Http\Controllers\KabidController::class, 'peringkat']);
+Route::get('/kabid/peringkat/cetak', [App\Http\Controllers\KabidController::class, 'cetakPeringkat'])->name('peringkat.cetak');

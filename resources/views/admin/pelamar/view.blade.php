@@ -73,7 +73,7 @@
                             <tr>
                                 <td width=300px>Curriculum Vitae / CV</td>
                                 <td width=10px>:</td>
-                                <td><a href="{{ $user->cv }}" target="_blank">{{ $user->cv }}</a></td>
+                                <td> <a href="{{ asset($user->cv) }}" target="_blank" download>{{ $user->cv }}</a></td>
                             </tr>
                             <tr>
                                 <td width=300px>Ijazah</td>

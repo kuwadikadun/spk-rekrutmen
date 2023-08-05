@@ -16,14 +16,24 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Hash;
+use PDF;
 
 class KabidController extends Controller
 {
-    public function dashboard(){
-        $lowongan = Lowongan::all();
+    public function dashboardLowongan(){
+        $lowongan = Lowongan::orderBy('id', 'DESC')->limit(8)->get();
+        $apply = DB::table('lamarans')
+        ->join('lowongans', 'lamarans.id_lowongan', '=', 'lowongans.id')
+        ->join('users', 'lamarans.id_user', '=', 'users.id')
+        ->where('lamarans.id_user', 3)
+        ->select('lamarans.*', 'lowongans.*')
+        ->orderBy('lamarans.tanggal_lamaran', 'DESC')
+        ->get();
 
-        return view('kabid.dashboard',compact('lowongan'));
+        // return $apply;
+        return view('kabid.dashboard',compact('lowongan', 'apply'));
     }
+
 
 
     public function indexLowongan(){
@@ -1134,59 +1144,114 @@ $validasiData['total'] = $totalketerampilan;
             return redirect('/kabid/wawancara')->with('status', 'Data berhasil dihapus.');
         }
 
-        public function peringkat(){
-            $peringkat = DB::table('users')
-            ->join('administrasis', 'users.id', '=', 'administrasis.id_user')
-            ->join('keterampilans', 'users.id', '=', 'keterampilans.id_user')
-            ->join('wawancaras', 'users.id', '=', 'wawancaras.id_user')
-            ->select('users.name', 'users.no_telpon', 'administrasis.total AS total_admin', 'keterampilans.total AS total_terampil', 'wawancaras.total AS total_wawancara' )
-            ->get();
-            $peringkatCount = DB::table('users')
-            ->join('administrasis', 'users.id', '=', 'administrasis.id_user')
-            ->join('keterampilans', 'users.id', '=', 'keterampilans.id_user')
-            ->join('wawancaras', 'users.id', '=', 'wawancaras.id_user')
-            ->select('users.name', 'users.no_telpon', 'administrasis.total AS total_admin', 'keterampilans.total AS total_terampil', 'wawancaras.total AS total_wawancara' )
-            ->count();
-
-            $userCount = User::count();
-
-            $arrayKosong = array();
-
-            foreach($peringkat as $item) {
-                $name = $item->name;
-                $no_telpon = $item->no_telpon;
-                $total_admin = $item->total_admin;
-                $total_terampil = $item->total_terampil;
-                $total_wawancara = $item->total_wawancara;
-                $total_semua = 0.3 * $total_admin + 0.4 * $total_terampil + 0.3 * $total_wawancara;
-
-                $result = [
-                    'name' => $name,
-                    'no_telpon' => $no_telpon,
-                    'total_admin' => $total_admin,
-                    'total_terampil' => $total_terampil,
-                    'total_wawancara' => $total_wawancara,
-                    'total_semua' => $total_semua,
-                ];
-
-                array_push($arrayKosong, $result);
+        public function peringkat()
+        {
+            $lowongans = Lowongan::all();
+        
+            $sortedData = [];
+        
+            foreach ($lowongans as $lowongan) {
+                $users = $lowongan->users()
+                    ->join('administrasis', 'users.id', '=', 'administrasis.id_user')
+                    ->join('keterampilans', 'users.id', '=', 'keterampilans.id_user')
+                    ->join('wawancaras', 'users.id', '=', 'wawancaras.id_user')
+                    ->select('users.name', 'users.email', 'users.no_telpon', 'users.alamat', 'users.jenis_kelamin', 'users.pendidikan_terakhir',   'administrasis.total AS total_admin', 'keterampilans.total AS total_terampil', 'wawancaras.total AS total_wawancara')
+                    ->get();
+        
+                foreach ($users as $user) {
+                    $total_semua = 0.3 * $user->total_admin + 0.4 * $user->total_terampil + 0.3 * $user->total_wawancara;
+        
+                    $result = [
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'no_telpon' => $user->no_telpon,
+                        'alamat' => $user->alamat,
+                        'jenis_kelamin' => $user->jenis_kelamin,
+                        'pendidikan_terakhir' => $user->pendidikan_terakhir,
+                        'posisi' => $lowongan->posisi,
+                        'total_admin' => $user->total_admin,
+                        'total_terampil' => $user->total_terampil,
+                        'total_wawancara' => $user->total_wawancara,
+                        'total_semua' => $total_semua,
+                    ];
+        
+                    // $sortedData[$lowongan->nama_bidang][] = $result;
+        
+                    // $sortedData[$lowongan->nama_bidang][] = collect($result)->sortByDesc('total_semua')->values()->all();
+        
+                    $sortedData[$lowongan->nama_bidang][] = $result;
+                }
+        
+                // Sort users within each category based on 'Total Semua' (descending order)
+                if (isset($sortedData[$lowongan->nama_bidang])) {
+                    usort($sortedData[$lowongan->nama_bidang], function ($a, $b) {
+                        return $b['total_semua'] <=> $a['total_semua'];
+                    });
+                }
             }
+        
+            // Sort $sortedData by the highest 'Total Semua' value of each category (descending order)
+            uasort($sortedData, function ($a, $b) {
+                $total_a = max(array_column($a, 'total_semua'));
+                $total_b = max(array_column($b, 'total_semua'));
+                return $total_b <=> $total_a;
+            });
+                
+            
+        
+            // $sortedData = collect($sortedData)->sortByDesc('total_semua')->values()->all();
+        
+            // return $sortedData;
+        
+            return view('kabid.peringkat.index', compact('sortedData'));
+        }
 
-            $sort = collect($arrayKosong)->sortByDesc('total_semua')->values()->all();
-            // $peringkat = Peringkat::join('users', 'peringkat.id', '=', 'users.id')
-            //     ->join('wawancara', 'peringkat.id', '=', 'wawancara.id')
-            //     ->join('keterampilan', 'peringkat.id', '=', 'keterampilan.id')
-            //     ->join('administrasi', 'peringkat.id', '=', 'administrasi.id')
-            //     ->select(
-            //         'peringkat.id',
-            //         'user.name',
-            //         'user.no_telpon',
-            //         'wawancara.total',
-            //         'keterampilan.total',
-            //         'administrasi.total'
-            //     )
-            //     ->get();
-
-            return view('kabid.peringkat.index', compact('sort', 'peringkatCount'));
+        public function cetakPeringkat()
+        {
+            $lowongans = Lowongan::all();
+            $sortedData = [];
+        
+            foreach ($lowongans as $lowongan) {
+                $users = $lowongan->users()
+                    ->join('administrasis', 'users.id', '=', 'administrasis.id_user')
+                    ->join('keterampilans', 'users.id', '=', 'keterampilans.id_user')
+                    ->join('wawancaras', 'users.id', '=', 'wawancaras.id_user')
+                    ->select('users.name', 'users.email', 'users.no_telpon', 'users.alamat', 'users.jenis_kelamin', 'users.pendidikan_terakhir',   'administrasis.total AS total_admin', 'keterampilans.total AS total_terampil', 'wawancaras.total AS total_wawancara')
+                    ->get();
+        
+                foreach ($users as $user) {
+                    $total_semua = 0.3 * $user->total_admin + 0.4 * $user->total_terampil + 0.3 * $user->total_wawancara;
+        
+                    $result = [
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'no_telpon' => $user->no_telpon,
+                        'alamat' => $user->alamat,
+                        'jenis_kelamin' => $user->jenis_kelamin,
+                        'pendidikan_terakhir' => $user->pendidikan_terakhir,
+                        'posisi' => $lowongan->posisi,
+                        'total_admin' => $user->total_admin,
+                        'total_terampil' => $user->total_terampil,
+                        'total_wawancara' => $user->total_wawancara,
+                        'total_semua' => $total_semua,
+                    ];
+        
+                    $sortedData[$lowongan->nama_bidang][] = $result;
+                }
+        
+                if (isset($sortedData[$lowongan->nama_bidang])) {
+                    usort($sortedData[$lowongan->nama_bidang], function ($a, $b) {
+                        return $b['total_semua'] <=> $a['total_semua'];
+                    });
+                }
+            }
+        
+            uasort($sortedData, function ($a, $b) {
+                $total_a = max(array_column($a, 'total_semua'));
+                $total_b = max(array_column($b, 'total_semua'));
+                return $total_b <=> $total_a;
+            });
+        
+            return view('kabid.peringkat.print', compact('sortedData'));
         }
 }

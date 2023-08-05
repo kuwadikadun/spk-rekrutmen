@@ -38,6 +38,7 @@ class PelamarLoginController extends Controller
         ];
 
         if(Auth::attempt($loginPelamar)){
+            // dd($loginPelamar);
             return redirect('/pelamar/dashboard')->with('status', 'Berhasil masuk');
         }else {
             return redirect('/pelamar')->withErrors('Email atau Password Salah')->withInput();
@@ -94,10 +95,10 @@ class PelamarLoginController extends Controller
         $fileskck = time()."_".$skck->getClientOriginalName();
         $filepas_foto = time()."_".$pas_foto->getClientOriginalName();
 
-        $cv->move(public_path().'/dokumen',$filecv);
-        $ijazah->move(public_path().'/dokumen',$fileijazah);
-        $skck->move(public_path().'/dokumen',$fileskck);
-        $pas_foto->move(public_path().'/img',$filepas_foto);
+        $cv->storeAs('dokumen', $filecv);
+        $ijazah->storeAs('dokumen', $fileijazah);
+        $skck->storeAs('dokumen', $fileskck);
+        $pas_foto->storeAs('img', $filepas_foto);
         // $dtUpload->save();
 
         // $role = "Pelamar";

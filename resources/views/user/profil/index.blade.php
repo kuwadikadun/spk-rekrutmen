@@ -28,13 +28,13 @@
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="name">Nama</label>
                             <div class="col-lg-6">
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Masukkan nama lengkap...">
+                                <input type="text" class="form-control" id="name" value="{{ $user->name }}" name="name" placeholder="Masukkan nama lengkap...">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="jenis_kelamin">Jenis Kelamin</label>
                             <div class="col-lg-6">
-                                <select  class="form-control" id="jenis_kelamin" name="kelamin">
+                                <select  class="form-control" id="jenis_kelamin"  name="kelamin">
                                     <option value="" disabled>Pilih Jenis Kelamin</option>
                                     <option value="pria">Pria</option>
                                     <option value="wanita">Wanita</option>
@@ -44,19 +44,19 @@
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="alamat">Alamat</label>
                             <div class="col-lg-6">
-                                <input type="textarea" class="form-control" id="alamat" name="alamat" placeholder="Masukkan alamat lengkap...">
+                                <input type="textarea" class="form-control" value="{{ $user->alamat }}" id="alamat" name="alamat" placeholder="Masukkan alamat lengkap...">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="tempat_lahir">Tempat Lahir</label>
                             <div class="col-lg-6">
-                                <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" placeholder="Masukkan tempat lahir...">
+                                <input type="text" class="form-control" value="{{ $user->tempat_lahir }}" id="tempat_lahir" name="tempat_lahir" placeholder="Masukkan tempat lahir...">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="tanggal_lahir">Tanggal Lahir</label>
                             <div class="col-lg-6">
-                                <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" placeholder="Masukkan tempat lahir...">
+                                <input type="date" class="form-control" id="tanggal_lahir" value="{{ $user->tanggal_lahir }}" name="tanggal_lahir" placeholder="Masukkan tempat lahir...">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -73,13 +73,13 @@
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="no_telpon">Telepon</label>
                             <div class="col-lg-6">
-                                <input type="text" class="form-control" id="no_telpon" name="no_telpon" placeholder="Masukkan nomor telepon...">
+                                <input type="text" class="form-control" value="{{ $user->no_telpon }}" id="no_telpon" name="no_telpon" placeholder="Masukkan nomor telepon...">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="email">Email</label>
                             <div class="col-lg-6">
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Masukkan email lengkap...">
+                                <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}" placeholder="Masukkan email lengkap...">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -125,7 +125,7 @@
                             </div>
                         </div>
                      
-                        <a href="{{ url('/pelamar/profil/edit', $item->id) }}" class="btn  btn-warning">Edit</a>
+                        <a href="{{ url('/pelamar/profil/update/', auth()->user()->id) }}" class="btn  btn-warning">Edit</a>
                     </form>
                 </div>
             </div>

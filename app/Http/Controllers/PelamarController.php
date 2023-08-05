@@ -62,10 +62,11 @@ class PelamarController extends Controller
         $fileskck = time()."_".$skck->getClientOriginalName();
         $filepas_foto = time()."_".$pas_foto->getClientOriginalName();
 
-        $cv->move(public_path().'/dokumen',$filecv);
-        $ijazah->move(public_path().'/dokumen',$fileijazah);
-        $skck->move(public_path().'/dokumen',$fileskck);
-        $pas_foto->move(public_path().'/img',$filepas_foto);
+        // Simpan file di direktori penyimpanan (storage)
+        $cv->storeAs('dokumen', $filecv);
+        $ijazah->storeAs('dokumen', $fileijazah);
+        $skck->storeAs('dokumen', $fileskck);
+        $pas_foto->storeAs('img', $filepas_foto);
 
         $role = "Pelamar";
         $validasiData['role'] = $role;
@@ -365,6 +366,7 @@ class PelamarController extends Controller
 //     return view('user.peringkat.index', compact('sortedData'));
 // }
 
+
 public function peringkat()
 {
     $lowongans = Lowongan::all();
@@ -376,7 +378,7 @@ public function peringkat()
             ->join('administrasis', 'users.id', '=', 'administrasis.id_user')
             ->join('keterampilans', 'users.id', '=', 'keterampilans.id_user')
             ->join('wawancaras', 'users.id', '=', 'wawancaras.id_user')
-            ->select('users.name', 'users.no_telpon', 'administrasis.total AS total_admin', 'keterampilans.total AS total_terampil', 'wawancaras.total AS total_wawancara')
+            ->select('users.name', 'users.email', 'users.no_telpon', 'users.alamat', 'users.jenis_kelamin', 'users.pendidikan_terakhir',   'administrasis.total AS total_admin', 'keterampilans.total AS total_terampil', 'wawancaras.total AS total_wawancara')
             ->get();
 
         foreach ($users as $user) {
@@ -384,7 +386,12 @@ public function peringkat()
 
             $result = [
                 'name' => $user->name,
+                'email' => $user->email,
                 'no_telpon' => $user->no_telpon,
+                'alamat' => $user->alamat,
+                'jenis_kelamin' => $user->jenis_kelamin,
+                'pendidikan_terakhir' => $user->pendidikan_terakhir,
+                'posisi' => $lowongan->posisi,
                 'total_admin' => $user->total_admin,
                 'total_terampil' => $user->total_terampil,
                 'total_wawancara' => $user->total_wawancara,
@@ -393,15 +400,33 @@ public function peringkat()
 
             // $sortedData[$lowongan->nama_bidang][] = $result;
 
-            $sortedData[$lowongan->nama_bidang][] = collect($result)->sortByDesc('total_semua')->values()->all();
+            // $sortedData[$lowongan->nama_bidang][] = collect($result)->sortByDesc('total_semua')->values()->all();
+
+            $sortedData[$lowongan->nama_bidang][] = $result;
+        }
+
+        // Sort users within each category based on 'Total Semua' (descending order)
+        if (isset($sortedData[$lowongan->nama_bidang])) {
+            usort($sortedData[$lowongan->nama_bidang], function ($a, $b) {
+                return $b['total_semua'] <=> $a['total_semua'];
+            });
         }
     }
+
+    // Sort $sortedData by the highest 'Total Semua' value of each category (descending order)
+    uasort($sortedData, function ($a, $b) {
+        $total_a = max(array_column($a, 'total_semua'));
+        $total_b = max(array_column($b, 'total_semua'));
+        return $total_b <=> $total_a;
+    });
+        
+    
 
     // $sortedData = collect($sortedData)->sortByDesc('total_semua')->values()->all();
 
     // return $sortedData;
 
-    return view('admin.peringkat.index', compact('sortedData'));
+    return view('user.peringkat.index', compact('sortedData'));
 }
 
 }

@@ -19,11 +19,26 @@ use League\CommonMark\Extension\Table\Table;
 
 class AdminController extends Controller
 {
-    public function dashboard(){
-        $lowongan = Lowongan::all();
+    // public function dashboard(){
+    //     $lowongan = Lowongan::all();
 
-        return view('admin.dashboard',compact('lowongan'));
+    //     return view('admin.dashboard',compact('lowongan'));
+    // }
+
+    public function dashboardLowongan(){
+        $lowongan = Lowongan::orderBy('id', 'DESC')->limit(8)->get();
+        $apply = DB::table('lamarans')
+        ->join('lowongans', 'lamarans.id_lowongan', '=', 'lowongans.id')
+        ->join('users', 'lamarans.id_user', '=', 'users.id')
+        ->where('lamarans.id_user', 3)
+        ->select('lamarans.*', 'lowongans.*')
+        ->orderBy('lamarans.tanggal_lamaran', 'DESC')
+        ->get();
+
+        // return $apply;
+        return view('admin.dashboard',compact('lowongan', 'apply'));
     }
+
 
 
     public function indexLowongan(){
@@ -123,7 +138,7 @@ class AdminController extends Controller
 
     // Pelamar
     public function pelamar(){
-        $user = User::where('role', 'pelamar')->get();
+        $user = User::where('role', 'user')->get();
         return view('admin.pelamar.index', compact('user'));
     }
 
@@ -152,7 +167,7 @@ class AdminController extends Controller
         $validasiData = $request->validate([
             'name' => 'required|string|max:50', 
             'email' => 'required|string|max:255|unique:users',
-            'password' => 'required|string|max:50', 
+            'password' => 'required|string|max:255', 
             'jenis_kelamin' => 'nullable',
             'role' => 'required|string|max:50', 
         ]);
@@ -1230,7 +1245,7 @@ $validasiData['total'] = $totalketerampilan;
             ->join('administrasis', 'users.id', '=', 'administrasis.id_user')
             ->join('keterampilans', 'users.id', '=', 'keterampilans.id_user')
             ->join('wawancaras', 'users.id', '=', 'wawancaras.id_user')
-            ->select('users.name', 'users.no_telpon', 'administrasis.total AS total_admin', 'keterampilans.total AS total_terampil', 'wawancaras.total AS total_wawancara')
+            ->select('users.name', 'users.email', 'users.no_telpon', 'users.alamat', 'users.jenis_kelamin', 'users.pendidikan_terakhir',   'administrasis.total AS total_admin', 'keterampilans.total AS total_terampil', 'wawancaras.total AS total_wawancara')
             ->get();
 
         foreach ($users as $user) {
@@ -1238,7 +1253,12 @@ $validasiData['total'] = $totalketerampilan;
 
             $result = [
                 'name' => $user->name,
+                'email' => $user->email,
                 'no_telpon' => $user->no_telpon,
+                'alamat' => $user->alamat,
+                'jenis_kelamin' => $user->jenis_kelamin,
+                'pendidikan_terakhir' => $user->pendidikan_terakhir,
+                'posisi' => $lowongan->posisi,
                 'total_admin' => $user->total_admin,
                 'total_terampil' => $user->total_terampil,
                 'total_wawancara' => $user->total_wawancara,
@@ -1247,9 +1267,27 @@ $validasiData['total'] = $totalketerampilan;
 
             // $sortedData[$lowongan->nama_bidang][] = $result;
 
-            $sortedData[$lowongan->nama_bidang][] = collect($result)->sortByDesc('total_semua')->values()->all();
+            // $sortedData[$lowongan->nama_bidang][] = collect($result)->sortByDesc('total_semua')->values()->all();
+
+            $sortedData[$lowongan->nama_bidang][] = $result;
+        }
+
+        // Sort users within each category based on 'Total Semua' (descending order)
+        if (isset($sortedData[$lowongan->nama_bidang])) {
+            usort($sortedData[$lowongan->nama_bidang], function ($a, $b) {
+                return $b['total_semua'] <=> $a['total_semua'];
+            });
         }
     }
+
+    // Sort $sortedData by the highest 'Total Semua' value of each category (descending order)
+    uasort($sortedData, function ($a, $b) {
+        $total_a = max(array_column($a, 'total_semua'));
+        $total_b = max(array_column($b, 'total_semua'));
+        return $total_b <=> $total_a;
+    });
+        
+    
 
     // $sortedData = collect($sortedData)->sortByDesc('total_semua')->values()->all();
 

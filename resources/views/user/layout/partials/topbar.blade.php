@@ -108,10 +108,16 @@
                                     </ul> --}}
                                     <form action="/logout/pelamar" method="POST">
                                         @csrf
-                                        <button type="submit" class="dropdown-item"><i class="icon-key"></i> Log Out</button>
+                                        <button type="submit" class="dropdown-item btn btn-danger"><i class="icon-key"></i> Log Out</button>
                                       </form>
                                 </div>
                             </div>
+                            {{-- <div class="user-img c-pointer position-relative"   data-toggle="dropdown">
+                                <form action="{{ url('/logout/pegawai') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger"></i> <span>Logout</span></button>
+                                </form>
+                            </div> --}}
                         @endauth
                         {{-- </li> --}}
 

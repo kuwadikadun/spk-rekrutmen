@@ -38,7 +38,6 @@
                                 <th>Nilai Bobot Grooming</th>
                                 <th>CF</th>
                                 <th>SF</th>
-                                <th>Grooming</th>
                                 <th>Total</th>
                                 <th>Action</th>
                                 
