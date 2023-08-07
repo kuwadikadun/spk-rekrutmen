@@ -19,11 +19,11 @@ use League\CommonMark\Extension\Table\Table;
 
 class AdminController extends Controller
 {
-    // public function dashboard(){
-    //     $lowongan = Lowongan::all();
+    public function dashboard(){
+        $lowongan = Lowongan::all();
 
-    //     return view('admin.dashboard',compact('lowongan'));
-    // }
+        return view('admin.dashboard',compact('lowongan'));
+    }
 
     public function dashboardLowongan(){
         $lowongan = Lowongan::orderBy('id', 'DESC')->limit(8)->get();

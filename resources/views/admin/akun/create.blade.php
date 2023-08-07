@@ -41,7 +41,7 @@
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="jenis_kelamin">Jenis Kelamin</label>
                             <div class="col-lg-6">
-                                <select  class="form-control" id="jenis_kelamin" name="kelamin">
+                                <select  class="form-control" id="jenis_kelamin" name="jenis_kelamin">
                                     <option value="" disabled>Pilih Jenis Kelamin</option>
                                     <option value="pria">Pria</option>
                                     <option value="wanita">Wanita</option>

@@ -41,7 +41,7 @@
                                 <td>
                                    {{$item->email}}
                                 </td>
-                                <td>{{$item->jenis_kelamin}}</td>
+                                <td>{{ ucwords($item->jenis_kelamin) }}</td>
                                 <td>{{$item->role}}</td>
                                 <td>
                                     <form action="{{url('/admin/akun/delete', $item->id)}}" method="post" class="d-inline-block">

@@ -14,11 +14,22 @@
         </ul>
     </div>
 @endif
+
+
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <form >
-                       
+                    @if (session('status'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('status') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+                    <form method="POST" action="/pelamar/profil/{{ $user->id }}">
+                       @csrf
+                       @method('PATCH')
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="nik">NIK</label>
                             <div class="col-lg-6">
@@ -91,13 +102,13 @@
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="pendidikan_terakhir">Pendidikan Terakhir</label>
                             <div class="col-lg-6">
-                                <input type="text" class="form-control" id="pendidikan_terakhir" name="pendidikan_terakhir" placeholder="Masukkan pendidikan terakhir...">
+                                <input type="text" class="form-control" id="pendidikan_terakhir" name="pendidikan_terakhir" placeholder="Masukkan pendidikan terakhir..." value="{{ $user->pendidikan_terakhir }}">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="nama_institusi">Nama Institusi</label>
                             <div class="col-lg-6">
-                                <input type="text" class="form-control" id="nama_institusi" name="nama_institusi" placeholder="Masukkan nama institusi / sekolah...">
+                                <input type="text" class="form-control" id="nama_institusi" name="nama_institusi" placeholder="Masukkan nama institusi / sekolah..." value="{{ $user->nama_institusi }}">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -125,7 +136,7 @@
                             </div>
                         </div>
                      
-                        <a href="{{ url('/pelamar/profil/update/', auth()->user()->id) }}" class="btn  btn-warning">Edit</a>
+                        <button class="btn  btn-warning">Edit</button>
                     </form>
                 </div>
             </div>

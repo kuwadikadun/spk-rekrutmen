@@ -39,7 +39,7 @@ class PelamarLoginController extends Controller
 
         if(Auth::attempt($loginPelamar)){
             // dd($loginPelamar);
-            return redirect('/pelamar/dashboard')->with('status', 'Berhasil masuk');
+            return redirect('/pelamar')->with('status', 'Berhasil masuk');
         }else {
             return redirect('/pelamar')->withErrors('Email atau Password Salah')->withInput();
         }
@@ -51,7 +51,7 @@ class PelamarLoginController extends Controller
         request()->session()->invalidate();
         request()->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/login');
     }
 
     public function register(){

@@ -92,8 +92,8 @@ Route::get('/pelamar/peringkat', [App\Http\Controllers\PelamarController::class,
 
 
 Route::get('/pelamar/profil', [App\Http\Controllers\PelamarController::class, 'index']);
-Route::get('/pelamar/profil/edit/{id}', [App\Http\Controllers\PelamarController::class, 'editProfil']);
-Route::patch('/pelamar/profil/update/{id}', [App\Http\Controllers\PelamarController::class, 'updateProfil']);
+// Route::get('/pelamar/profil/edit/{nik}', [App\Http\Controllers\PelamarController::class, 'editProfil']);
+Route::patch('/pelamar/profil/{id}', [App\Http\Controllers\PelamarController::class, 'updateProfil']);
 
 
 

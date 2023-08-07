@@ -27,15 +27,27 @@
             /* Tambahkan gaya kustom lainnya untuk halaman cetak */
         }
     </style>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 0;
+            margin-top: 50px;
+        }
+        @media print{
+            body {
+                margin: 20px 100px;
+            }
+        }
+    </style>
 </head>
-<body>
+<body onload="window.print()">
     <div class="logo">
         <!-- Tambahkan logo Anda di sini -->
-        <img src="path/to/logo.png" alt="Logo">
+        <img src="{{ asset('assets/img/bpbdkabserang.png') }}" width="100px" alt="Logo">
     </div>
     <!-- Tambahkan atribut lainnya di sini -->
-    <p>Informasi tambahan:</p>
+    {{-- <p>Informasi tambahan:</p> --}}
     <p>Tanggal Cetak: {{ date('d-m-Y') }}</p>
     <!-- Tambahan atribut lainnya sesuai kebutuhan -->
 
@@ -52,7 +64,7 @@
                         <h2>Nama Bidang: {{ $namaBidang }}</h2>
                         <table class="table table-striped">
                             <thead>
-                                <tr>
+                                <tr class="text-center">
                                     <th>Peringkat</th>
                                     <th>Name</th>
                                     <th>Email</th>
@@ -70,18 +82,18 @@
                             <tbody>
                                 @foreach ($users as $user)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td class="text-center">{{ $loop->iteration }}</td>
                                     <td>{{ $user['name'] }}</td>
                                     <td>{{ $user['email'] }}</td>
-                                    <td>{{ $user['no_telpon'] }}</td>
+                                    <td class="text-center">{{ $user['no_telpon'] }}</td>
                                     <td>{{ $user['alamat'] }}</td>
-                                    <td>{{ $user['jenis_kelamin'] }}</td>
-                                    <td>{{ $user['pendidikan_terakhir'] }}</td>
-                                    <td>{{ $user['posisi'] }}</td>
-                                    <td>{{ $user['total_admin'] }}</td>
-                                    <td>{{ $user['total_terampil'] }}</td>
-                                    <td>{{ $user['total_wawancara'] }}</td>
-                                    <td>{{ $user['total_semua'] }}</td>
+                                    <td class="text-center">{{ $user['jenis_kelamin'] }}</td>
+                                    <td class="text-center">{{ $user['pendidikan_terakhir'] }}</td>
+                                    <td class="text-center">{{ $user['posisi'] }}</td>
+                                    <td class="text-center">{{ $user['total_admin'] }}</td>
+                                    <td class="text-center">{{ $user['total_terampil'] }}</td>
+                                    <td class="text-center">{{ $user['total_wawancara'] }}</td>
+                                    <td class="text-center">{{ $user['total_semua'] }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

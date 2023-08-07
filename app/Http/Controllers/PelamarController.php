@@ -22,17 +22,18 @@ class PelamarController extends Controller
 {
     public function index(){
         $user = Auth::user();
+        
 
         return view('user.profil.index', compact('user'));
     }
 
     public function updateProfil(Request $request){
         $user = Auth::user();
-        $validasiData = $request->validate([
-            'nik' => 'required|unique:users',
+        $request->validate([
+            'nik' => 'required',
             'name' => 'required|string|max:50', 
-            'email' => 'required|string|max:255|unique:users',
-            'password' => 'required|string|max:50', 
+            'email' => 'required|string|max:255',
+            // 'password' => 'string|max:50', 
             'jenis_kelamin' => 'nullable',
             'alamat' => 'required|string|max:50',  
             'tempat_lahir' => 'required|string|max:50', 
@@ -41,38 +42,100 @@ class PelamarController extends Controller
             'no_telpon' => 'required|string|max:50',  
             'pendidikan_terakhir' => 'required|string|max:50', 
             'nama_institusi' => 'required|string|max:50', 
-            'cv' => 'required|file|mimes:pdf|max:2048', 
-            'ijazah' => 'required|file|mimes:pdf|max:2048', 
-            'skck' => 'required|file|mimes:pdf|max:2048', 
-            'pas_foto' => 'required|file|mimes:jpeg,png,jpg|max:2048',
+            // 'cv' => 'file|mimes:pdf|max:2048', 
+            // 'ijazah' => 'file|mimes:pdf|max:2048', 
+            // 'skck' => 'file|mimes:pdf|max:2048', 
+            // 'pas_foto' => 'file|mimes:jpeg,png,jpg|max:2048',
             'role' => 'nullable|string', 
         ]);
 
         $nik = $request->nik;
 
-        $validasiData['password'] = Hash::make($validasiData['password']);
+        // $validasiData['password'] = Hash::make($validasiData['password']);
 
-        $cv = $request->file('cv');
-        $ijazah = $request->file('ijazah');
-        $skck = $request->file('skck');
-        $pas_foto = $request->file('pas_foto');
+        
+        
+        
+        
 
-        $filecv = time()."_".$nik."_".$cv->getClientOriginalName();
-        $fileijazah = time()."_".$ijazah->getClientOriginalName();
-        $fileskck = time()."_".$skck->getClientOriginalName();
-        $filepas_foto = time()."_".$pas_foto->getClientOriginalName();
+        
+        
+        
+        
 
         // Simpan file di direktori penyimpanan (storage)
-        $cv->storeAs('dokumen', $filecv);
-        $ijazah->storeAs('dokumen', $fileijazah);
-        $skck->storeAs('dokumen', $fileskck);
-        $pas_foto->storeAs('img', $filepas_foto);
+        
+        
+        
+        
 
-        $role = "Pelamar";
-        $validasiData['role'] = $role;
+        if($request->password == "") {
+            $pass = $user->password;
+        } else {
+            $pass = Hash::make($request->password);
+        }
+
+        if($request->cv == "") {
+            $cvlah = $user->cv;
+        } else {
+            $cv = $request->file('cv');
+            $filecv = time()."_".$nik."_".$cv->getClientOriginalName();
+            $cv = $filecv;
+            $cvlah = $cv;
+        }
+
+        if($request->ijazah == "") {
+            $ijazahlah = $user->ijazah;
+        } else {
+            $ijazah = $request->file('ijazah');
+            $fileijazah = time()."_".$ijazah->getClientOriginalName();
+            $ijazah = $fileijazah;
+            $ijazahlah = $ijazah;
+        }
+
+        if($request->skck == "") {
+            $skcklah = $user->skck;
+        } else {
+            $skck = $request->file('skck');
+            $fileskck = time()."_".$skck->getClientOriginalName();
+            $skck = $fileskck;
+            $skcklah = $skck;
+        }
+
+        if($request->pas_foto == "") {
+            $foto = $user->pas_foto;
+        } else {
+            $pas_foto = $request->file('pas_foto');
+            $filepas_foto = time()."_".$pas_foto->getClientOriginalName();
+            $pas_foto = $filepas_foto;
+            $foto = $pas_foto;
+        }
+        // $role = "Pelamar";
+        // $validasiData['role'] = $role;
         // $user->update($validasiData);
 
-        return redirect()->route('profile.index')->with('success', 'Profil berhasil diperbarui!');
+        User::where('id', $user->id)
+        ->update([
+            'nik' => $request->nik,
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $pass,
+            'jenis_kelamin' => $request->kelamin,
+            'alamat' => $request->alamat,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'agama' => $request->agama,
+            'no_telpon' => $request->no_telpon,
+            'pendidikan_terakhir'=> $request->pendidikan_terakhir,
+            'nama_institusi' => $request->nama_institusi,
+            'cv' => $cvlah,
+            'ijazah' => $ijazahlah,
+            'skck' => $skcklah,
+            'pas_foto' => $foto,
+            'role' => $user->role,
+        ]);
+
+        return redirect('/pelamar/profil')->with('status', 'Profil berhasil diperbarui!');
     }
     
 

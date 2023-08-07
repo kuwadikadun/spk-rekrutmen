@@ -44,7 +44,10 @@
                             <div class="drop-down dropdown-profile animated fadeIn dropdown-menu">
                                 <div class="dropdown-content-body">
                                     <ul>
-                                        <li><a href="page-login.html"><i class="icon-key"></i> <span>Logout</span></a></li>
+                                        <form action="/logout/pegawai" method="POST">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item btn btn-danger"><i class="icon-key"></i> Log Out</button>
+                                      </form>
                                     </ul>
                                 </div>
                             </div>
