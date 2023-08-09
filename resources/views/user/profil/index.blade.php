@@ -47,8 +47,16 @@
                             <div class="col-lg-6">
                                 <select  class="form-control" id="jenis_kelamin"  name="kelamin">
                                     <option value="" disabled>Pilih Jenis Kelamin</option>
-                                    <option value="pria">Pria</option>
-                                    <option value="wanita">Wanita</option>
+                                    {{-- <option value="pria">Pria</option>
+                                    <option value="wanita">Wanita</option> --}}
+
+                                    <option @if ($user->jenis_kelamin == 'pria')
+                                        selected
+                                    @endif value="pria">Pria</option>
+                                    <option @if ($user->jenis_kelamin == 'wanita')
+                                        selected
+                                    @endif value="wanita">Wanita</option>
+                                    
                                 </select>
                             </div>
                         </div>
@@ -78,6 +86,9 @@
                                     <option value="" disabled>Pilih Agama</option>
                                     <option value="islam">Islam</option>
                                     <option value="kristen">Kristen</option>
+                                    <option value="katolik">Katolik</option>
+                                    <option value="hindu">Hindu</option>
+                                    <option value="budha">Budha</option>
                                 </select>
                             </div>
                         </div>

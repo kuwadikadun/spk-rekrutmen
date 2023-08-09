@@ -213,20 +213,6 @@ class AdminController extends Controller
         return redirect('/admin/akun')->with('status', 'Data berhasil dihapus.');
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public function indexAdministrasi(){
         $administrasi = Administrasi::all();
         $data = DB::table('administrasis')
@@ -1294,5 +1280,54 @@ $validasiData['total'] = $totalketerampilan;
     // return $sortedData;
 
     return view('admin.peringkat.index', compact('sortedData'));
+}
+
+public function cetakPeringkat()
+{
+    $lowongans = Lowongan::all();
+    $sortedData = [];
+
+    foreach ($lowongans as $lowongan) {
+        $users = $lowongan->users()
+            ->join('administrasis', 'users.id', '=', 'administrasis.id_user')
+            ->join('keterampilans', 'users.id', '=', 'keterampilans.id_user')
+            ->join('wawancaras', 'users.id', '=', 'wawancaras.id_user')
+            ->select('users.name', 'users.email', 'users.no_telpon', 'users.alamat', 'users.jenis_kelamin', 'users.pendidikan_terakhir',   'administrasis.total AS total_admin', 'keterampilans.total AS total_terampil', 'wawancaras.total AS total_wawancara')
+            ->get();
+
+        foreach ($users as $user) {
+            $total_semua = 0.3 * $user->total_admin + 0.4 * $user->total_terampil + 0.3 * $user->total_wawancara;
+
+            $result = [
+                'name' => $user->name,
+                'email' => $user->email,
+                'no_telpon' => $user->no_telpon,
+                'alamat' => $user->alamat,
+                'jenis_kelamin' => $user->jenis_kelamin,
+                'pendidikan_terakhir' => $user->pendidikan_terakhir,
+                'posisi' => $lowongan->posisi,
+                'total_admin' => $user->total_admin,
+                'total_terampil' => $user->total_terampil,
+                'total_wawancara' => $user->total_wawancara,
+                'total_semua' => $total_semua,
+            ];
+
+            $sortedData[$lowongan->nama_bidang][] = $result;
+        }
+
+        if (isset($sortedData[$lowongan->nama_bidang])) {
+            usort($sortedData[$lowongan->nama_bidang], function ($a, $b) {
+                return $b['total_semua'] <=> $a['total_semua'];
+            });
+        }
+    }
+
+    uasort($sortedData, function ($a, $b) {
+        $total_a = max(array_column($a, 'total_semua'));
+        $total_b = max(array_column($b, 'total_semua'));
+        return $total_b <=> $total_a;
+    });
+
+    return view('admin.peringkat.print', compact('sortedData'));
 }
 }

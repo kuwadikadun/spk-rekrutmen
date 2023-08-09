@@ -73,6 +73,7 @@ Route::post('/logout/pegawai', [App\Http\Controllers\PegawaiLoginController::cla
 
 
 // User
+Route::middleware(['auth','CheckRolePelamar:user'])->group(function (){
 Route::get('/pelamar', [App\Http\Controllers\PelamarController::class, 'dashboardLowongan']);
 Route::get('/pelamar/dashboard', [App\Http\Controllers\PelamarController::class, 'dashboardLowongan']);
 Route::get('/pelamar/lowongan', [App\Http\Controllers\PelamarController::class, 'indexLowongan']);
@@ -94,12 +95,14 @@ Route::get('/pelamar/peringkat', [App\Http\Controllers\PelamarController::class,
 Route::get('/pelamar/profil', [App\Http\Controllers\PelamarController::class, 'index']);
 // Route::get('/pelamar/profil/edit/{nik}', [App\Http\Controllers\PelamarController::class, 'editProfil']);
 Route::patch('/pelamar/profil/{id}', [App\Http\Controllers\PelamarController::class, 'updateProfil']);
+});
 
 
 
 
 
 // Admin
+Route::middleware(['auth','CheckRole:admin'])->group(function (){
 Route::get('/admin', [App\Http\Controllers\AdminController::class, 'dashboard']);
 Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'dashboardLowongan']);
 
@@ -188,7 +191,8 @@ Route::get('/admin/wawancara/show/{id}', [App\Http\Controllers\AdminController::
 
 // Peringkat
 Route::get('/admin/peringkat', [App\Http\Controllers\AdminController::class, 'peringkat']);
-
+Route::get('/admin/peringkat/cetak', [App\Http\Controllers\AdminController::class, 'cetakPeringkat'])->name('peringkat.cetak');
+});
 
 //Kabid
 // Admin
