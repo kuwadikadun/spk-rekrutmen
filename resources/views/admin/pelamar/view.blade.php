@@ -73,17 +73,17 @@
                             <tr>
                                 <td width=300px>Curriculum Vitae / CV</td>
                                 <td width=10px>:</td>
-                                <td> <a href="{{ asset('dokumen/' . $user->cv) }}"><button class="btn btn-success" type="button">Download</button></a></td>
+                                <td> <a href="{{ asset('dokumen/' . $user->cv) }}" target="_blank" download><button class="btn btn-success" type="button">Download</button></a></td>
                             </tr>
                             <tr>
                                 <td width=300px>Ijazah</td>
                                 <td width=10px>:</td>
-                                <td> <a href="{{ asset('dokumen/' . $user->ijazah) }}"><button class="btn btn-success" type="button">Download</button></a></td>
+                                <td> <a href="{{ asset('dokumen/' . $user->ijazah) }}" target="_blank" download><button class="btn btn-success" type="button">Download</button></a></td>
                             </tr>
                             <tr>
                                 <td width=300px>Surat Keterangan Catatan Kepolisian</td>
                                 <td width=10px>:</td>
-                                <td> <a href="{{ asset('dokumen/' . $user->skck) }}"><button class="btn btn-success" type="button">Download</button></a></td>
+                                <td> <a href="{{ asset('dokumen/' . $user->skck) }}" target="_blank" download><button class="btn btn-success" type="button">Download</button></a></td>
                             </tr>
                             <tr>
                                 <td width=300px>Pas Foto</td>
