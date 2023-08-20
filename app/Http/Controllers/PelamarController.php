@@ -51,65 +51,47 @@ class PelamarController extends Controller
 
         $nik = $request->nik;
 
-        // $validasiData['password'] = Hash::make($validasiData['password']);
-
-        
-        
-        
-        
-
-        
-        
-        
-        
-
-        // Simpan file di direktori penyimpanan (storage)
-        
-        
-        
-        
-
         if($request->password == "") {
             $pass = $user->password;
         } else {
             $pass = Hash::make($request->password);
         }
 
-        if($request->cv == "") {
-            $cvlah = $user->cv;
-        } else {
-            $cv = $request->file('cv');
-            $filecv = time()."_".$nik."_".$cv->getClientOriginalName();
-            $cv = $filecv;
-            $cvlah = $cv;
-        }
+         // Proses pembaruan dokumen CV
+    if ($request->hasFile('cv')) {
+        $cv = $request->file('cv');
+        $nama_cv = 'cv' . '_' . date('Ymdhis') . '.' . $cv->getClientOriginalExtension();
+        $cv->move('dokumen/', $nama_cv);
+        // Update field CV di database jika perlu
+        $user->cv = $nama_cv;
+    }
 
-        if($request->ijazah == "") {
-            $ijazahlah = $user->ijazah;
-        } else {
-            $ijazah = $request->file('ijazah');
-            $fileijazah = time()."_".$ijazah->getClientOriginalName();
-            $ijazah = $fileijazah;
-            $ijazahlah = $ijazah;
-        }
+    // Proses pembaruan dokumen Ijazah
+    if ($request->hasFile('ijazah')) {
+        $ijazah = $request->file('ijazah');
+        $nama_ijazah = 'ijazah' . '_' . date('Ymdhis') . '.' . $ijazah->getClientOriginalExtension();
+        $ijazah->move('dokumen/', $nama_ijazah);
+        // Update field ijazah di database jika perlu
+        $user->ijazah = $nama_ijazah;
+    }
 
-        if($request->skck == "") {
-            $skcklah = $user->skck;
-        } else {
-            $skck = $request->file('skck');
-            $fileskck = time()."_".$skck->getClientOriginalName();
-            $skck = $fileskck;
-            $skcklah = $skck;
-        }
+    // Proses pembaruan dokumen SKCK
+    if ($request->hasFile('skck')) {
+        $skck = $request->file('skck');
+        $nama_skck = 'skck' . '_' . date('Ymdhis') . '.' . $skck->getClientOriginalExtension();
+        $skck->move('dokumen/', $nama_skck);
+        // Update field SKCK di database jika perlu
+        $user->skck = $nama_skck;
+    }
 
-        if($request->pas_foto == "") {
-            $foto = $user->pas_foto;
-        } else {
-            $pas_foto = $request->file('pas_foto');
-            $filepas_foto = time()."_".$pas_foto->getClientOriginalName();
-            $pas_foto = $filepas_foto;
-            $foto = $pas_foto;
-        }
+    // Proses pembaruan dokumen pas foto
+    if ($request->hasFile('pas_foto')) {
+        $pas_foto = $request->file('pas_foto');
+        $nama_pas_foto = 'pas_foto' . '_' . date('Ymdhis') . '.' . $pas_foto->getClientOriginalExtension();
+        $pas_foto->move('img/', $nama_pas_foto);
+        // Update field pas_foto di database jika perlu
+        $user->pas_foto = $nama_pas_foto;
+    }
         // $role = "Pelamar";
         // $validasiData['role'] = $role;
         // $user->update($validasiData);
@@ -128,10 +110,10 @@ class PelamarController extends Controller
             'no_telpon' => $request->no_telpon,
             'pendidikan_terakhir'=> $request->pendidikan_terakhir,
             'nama_institusi' => $request->nama_institusi,
-            'cv' => $cvlah,
-            'ijazah' => $ijazahlah,
-            'skck' => $skcklah,
-            'pas_foto' => $foto,
+            'cv' => $user->cv,
+            'ijazah' => $user->ijazah,
+            'skck' => $user->skck,
+            'pas_foto' => $user->pas_foto,
             'role' => $user->role,
         ]);
 

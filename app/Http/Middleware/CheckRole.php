@@ -17,11 +17,11 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next, $role)
     {
-        
-        if (Auth::pegawai() && Auth::pegawai()->role != $role){
-            abort(403, 'gak ada akses.');
+        if (Auth::guard('pegawai')->check() && Auth::guard('pegawai')->user()->role != $role) {
+            abort(403, 'Tidak ada akses.');
         }
-
+    
         return $next($request);
     }
+    
 }

@@ -83,12 +83,28 @@
                             <div class="col-lg-6">
                                 {{-- <input type="text" class="form-control" id="agama" name="agama" placeholder="Masukkan agama..."> --}}
                                 <select  class="form-control" id="agama" name="agama">
-                                    <option value="" disabled>Pilih Agama</option>
-                                    <option value="islam">Islam</option>
-                                    <option value="kristen">Kristen</option>
-                                    <option value="katolik">Katolik</option>
-                                    <option value="hindu">Hindu</option>
-                                    <option value="budha">Budha</option>
+                                    <option @if ($user->agama == 'islam')
+                                        selected
+                                    @endif value="islam">Islam</option>
+
+                                    <option @if ($user->agama == 'kristen')
+                                        selected
+                                    @endif value="kristen">Kristen</option>   
+
+                                    <option @if ($user->agama == 'katolik')
+                                        selected
+                                    @endif value="katolik">Katolik</option>   
+
+                                    <option @if ($user->agama == 'hindu')
+                                        selected
+                                    @endif value="hindu">Hindu</option>   
+
+                                    <option @if ($user->agama == 'budha')
+                                        selected
+                                    @endif value="budha">budha</option>   
+
+
+                                   
                                 </select>
                             </div>
                         </div>
@@ -125,25 +141,38 @@
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="cv">CV</label>
                             <div class="col-lg-6">
-                                <input type="file" name="cv" class="form-control-file">
+                                <input type="file"  name="cv" class="form-control-file">
+                                @if ($user->cv)
+                                <p>File saat ini: {{ $user->cv }}</p>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="ijazah">Ijazah</label>
                             <div class="col-lg-6">
                                 <input type="file" name="ijazah" class="form-control-file">
+                                @if ($user->ijazah)
+                                <p>File saat ini: {{ $user->ijazah }}</p>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="skck">SKCK</label>
                             <div class="col-lg-6">
                                 <input type="file" name="skck" class="form-control-file">
+                                @if ($user->skck)
+                                <p>File saat ini: {{ $user->skck }}</p>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="pas_foto">Pas Foto</label>
                             <div class="col-lg-6">
                                 <input type="file" name="pas_foto" class="form-control-file">
+                                @if ($user->pas_foto)
+                                <img width="150px" src="{{asset('img/' .$user->pas_foto)}}" alt="Pas Foto">
+                                {{-- <p>File saat ini: {{ $user->cv }}</p> --}}
+                                @endif
                             </div>
                         </div>
                      

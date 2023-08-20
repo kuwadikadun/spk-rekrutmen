@@ -13,15 +13,7 @@ class PegawaiLoginController extends Controller
     }
 
     public function login(Request $request){
-        // $credentials = $request->only('email', 'password');
-
-        // if(Auth::guard('user')->attempt($credentials)){
-        //     // Jika login berhasil maka masuk ke dashboard
-        //     // return redirect('pelamar/dashboard')->with('status', 'Data berhasil ditambah!');
-        //     return redirect()->intended('/Pegawai/dashboard');
-        // }else {
-        //     return back()->withErrors(['email' => 'Email atau password salah']);
-        // }
+    
 
         $request->validate([
             'email' => 'required',

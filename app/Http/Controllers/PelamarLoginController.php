@@ -85,25 +85,40 @@ class PelamarLoginController extends Controller
 
         $validasiData['password'] = Hash::make($validasiData['password']);
 
+
         $cv = $request->file('cv');
+        $nama_cv = 'cv'.'_'.date('Ymdhis').'.'.$request->file('cv')->getClientOriginalExtension();
+    
+        $cv->move('dokumen/',$nama_cv);
+
         $ijazah = $request->file('ijazah');
+        $nama_ijazah = 'ijazah'.'_'.date('Ymdhis').'.'.$request->file('ijazah')->getClientOriginalExtension();
+   
+        $ijazah->move('dokumen/',$nama_ijazah);
+
         $skck = $request->file('skck');
+        $nama_skck = 'skck'.'_'.date('Ymdhis').'.'.$request->file('skck')->getClientOriginalExtension();
+
+        $skck->move('dokumen/',$nama_skck);
+
         $pas_foto = $request->file('pas_foto');
+        $nama_pas_foto = 'pas_foto'.'_'.date('Ymdhis').'.'.$request->file('pas_foto')->getClientOriginalExtension();
 
-        $filecv = time()."_".$nik."_".$cv->getClientOriginalName();
-        $fileijazah = time()."_".$ijazah->getClientOriginalName();
-        $fileskck = time()."_".$skck->getClientOriginalName();
-        $filepas_foto = time()."_".$pas_foto->getClientOriginalName();
+        $pas_foto->move('img/',$nama_pas_foto);
+      
 
-        $cv->storeAs('dokumen', $filecv);
-        $ijazah->storeAs('dokumen', $fileijazah);
-        $skck->storeAs('dokumen', $fileskck);
-        $pas_foto->storeAs('img', $filepas_foto);
+    
+
+    
         // $dtUpload->save();
 
         // $role = "Pelamar";
         $role = "user";
         $validasiData['role'] = $role;
+        $validasiData['cv'] = $nama_cv;
+        $validasiData['ijazah'] = $nama_ijazah;
+        $validasiData['skck'] = $nama_skck;
+        $validasiData['pas_foto'] = $nama_pas_foto;
 
         $user =  User::create($validasiData);
         Auth::login($user);

@@ -102,7 +102,7 @@ Route::patch('/pelamar/profil/{id}', [App\Http\Controllers\PelamarController::cl
 
 
 // Admin
-Route::middleware(['auth','CheckRole:admin'])->group(function (){
+// Route::middleware(['auth','CheckRole:admin'])->group(function (){
 Route::get('/admin', [App\Http\Controllers\AdminController::class, 'dashboard']);
 Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'dashboardLowongan']);
 
@@ -125,11 +125,6 @@ Route::get('/admin/lamaran/{id}', [App\Http\Controllers\AdminController::class, 
 // Admin Pelamar
 Route::get('/admin/pelamar', [App\Http\Controllers\AdminController::class, 'pelamar']);
 Route::get('/admin/pelamar/{id}', [App\Http\Controllers\AdminController::class, 'viewPelamar']);
-
-
-
-
-
 
 // Admin Akun
 Route::get('/admin/akun', [App\Http\Controllers\AdminController::class, 'indexAkun']);
@@ -192,10 +187,12 @@ Route::get('/admin/wawancara/show/{id}', [App\Http\Controllers\AdminController::
 // Peringkat
 Route::get('/admin/peringkat', [App\Http\Controllers\AdminController::class, 'peringkat']);
 Route::get('/admin/peringkat/cetak', [App\Http\Controllers\AdminController::class, 'cetakPeringkat'])->name('peringkat.cetak');
-});
+// });
 
 //Kabid
-// Admin
+
+
+// Route::middleware(['auth','CheckRole:kepala bidang'])->group(function (){
 Route::get('/kabid', [App\Http\Controllers\KabidController::class, 'dashboard']);
 Route::get('/kabid/dashboard', [App\Http\Controllers\KabidController::class, 'dashboardLowongan']);
 
@@ -285,3 +282,4 @@ Route::get('/kabid/wawancara/show/{id}', [App\Http\Controllers\KabidController::
 // Peringkat
 Route::get('/kabid/peringkat', [App\Http\Controllers\KabidController::class, 'peringkat']);
 Route::get('/kabid/peringkat/cetak', [App\Http\Controllers\KabidController::class, 'cetakPeringkat'])->name('peringkat.cetak');
+// });

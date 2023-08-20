@@ -73,23 +73,23 @@
                             <tr>
                                 <td width=300px>Curriculum Vitae / CV</td>
                                 <td width=10px>:</td>
-                                <td> <a href="{{ asset($user->cv) }}" target="_blank" download>{{ $user->cv }}</a></td>
+                                <td> <a href="{{ asset('dokumen/' . $user->cv) }}"><button class="btn btn-success" type="button">Download</button></a></td>
                             </tr>
                             <tr>
                                 <td width=300px>Ijazah</td>
                                 <td width=10px>:</td>
-                                <td><a href="{{ $user->ijazah }}" target="_blank">{{ $user->ijazah }}</a></td>
+                                <td> <a href="{{ asset('dokumen/' . $user->ijazah) }}"><button class="btn btn-success" type="button">Download</button></a></td>
                             </tr>
                             <tr>
                                 <td width=300px>Surat Keterangan Catatan Kepolisian</td>
                                 <td width=10px>:</td>
-                                <td><a href="{{ $user->skck }}" target="_blank">{{ $user->skck }}</a></td>
+                                <td> <a href="{{ asset('dokumen/' . $user->skck) }}"><button class="btn btn-success" type="button">Download</button></a></td>
                             </tr>
                             <tr>
                                 <td width=300px>Pas Foto</td>
                                 <td width=10px>:</td>
                                 <td>
-                                    <img width="150px" src="{{ $user->pas_foto }}" alt="Pas Foto">
+                                    <img width="150px" src="{{asset('img/' .$user->pas_foto)}}" alt="Pas Foto">
                                     {{-- <img width="150px" src="{{ asset('/assets/img/bpbdkabserang.png') }}" alt="Pas Foto"> --}}
                                 </td>
                             </tr>
