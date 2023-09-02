@@ -38,10 +38,16 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-lg-4 col-form-label" for="kualifikasi">Kualifikasi</label>
+                            <label class="col-lg-4 col-form-label" for="lualifikasi">Kualifikasi</label>
                             <div class="col-lg-6">
-                                <textarea type="text" class="form-control"  value="{{old('kualifikasi')}}" id="kualifikasi" name="kualifikasi" placeholder="Masukkan kualifikasi..." style="height: 200px"></textarea>
-                                {{-- <input type="text" class="form-control" value="{{old('kualifikasi')}}" id="kualifikasi" name="kualifikasi" placeholder="Masukkan kualifikasi..."> --}}
+                                <select  class="form-control" id="kualifikasi" name="kualifikasi">
+                                    <option value="" disabled>Pilih kualifikasi</option>
+                                    <option value="sma">SMA</option>
+                                    <option value="smk">SMK</option>
+                                    <option value="s1">S1</option>
+                                    <option value="s2">S2</option>
+                                    <option value="s3">S3</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group row">

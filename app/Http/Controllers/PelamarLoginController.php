@@ -79,6 +79,8 @@ class PelamarLoginController extends Controller
             'skck' => 'required|file|mimes:pdf|max:2048', 
             'pas_foto' => 'required|file|mimes:jpeg,png,jpg|max:2048',
             'role' => 'nullable|string', 
+        ], [
+            'nik.unique' => 'NIK sudah terdaftar!',
         ]);
 
         $nik = $request->nik;

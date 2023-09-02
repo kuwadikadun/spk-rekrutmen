@@ -122,7 +122,10 @@ class PelamarController extends Controller
     
 
     public function dashboardLowongan(){
-        $lowongan = Lowongan::orderBy('id', 'DESC')->limit(8)->get();
+        $pendidikan = Auth::user()->pendidikan_terakhir;
+
+        $lowongan = Lowongan::where('kualifikasi', $pendidikan)->orderBy('id', 'DESC')->limit(8)->get();
+
         $apply = DB::table('lamarans')
         ->join('lowongans', 'lamarans.id_lowongan', '=', 'lowongans.id')
         ->join('users', 'lamarans.id_user', '=', 'users.id')
@@ -167,7 +170,10 @@ class PelamarController extends Controller
 
 
     public function indexLowongan(){
-        $lowongan = Lowongan::all();
+        $pendidikan = Auth::user()->pendidikan_terakhir;
+
+        $lowongan = Lowongan::where('kualifikasi', $pendidikan)->get();
+
 
         return view('user.lamaran.lowongan',compact('lowongan'));
     }
