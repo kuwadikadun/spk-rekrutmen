@@ -20,7 +20,7 @@
                 </div>
             @endif
                 <div class="table-responsive">
-                    <table class="table table-striped">
+                    <table class="table table-striped table-bordered zero-configuration">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -29,6 +29,12 @@
                                 <th>Nama Pelamar</th>
                                 <th>Psikotes</th>
                                 <th>Ketangkasan</th>
+                                <th>Nilai Asli Psikotes</th>
+                                <th>Nilai Asli Ketangkasan</th>
+                                <th>Nilai Bobot Psikotes</th>
+                                <th>Nilai Bobot Ketangkasan</th>
+                                <th>CF</th>
+                                <th>SF</th>
                                 <th>Total</th>
                                 <th>Action</th>
                                 
@@ -53,6 +59,12 @@
                                 <td>{{$item->name}}</td>
                                 <td>{{$item->psikotes}}</td>
                                 <td>{{$item->ketangkasan}}</td>
+                                <td>{{$item->nilaiasli_psikotes}}</td>
+                                <td>{{$item->nilaiasli_ketangkasan}}</td>
+                                <td>{{$item->nilaibobot_psikotes}}</td>
+                                <td>{{$item->nilaibobot_ketangkasan}}</td>
+                                <td>{{$item->cf}}</td>
+                                <td>{{$item->sf}}</td>
                                 <td>{{$item->total}}</td>
                                 <td>
                                     <a href="{{ url('/admin/keterampilan/edit', $item->id) }}" class="btn  btn-warning">Edit</a>

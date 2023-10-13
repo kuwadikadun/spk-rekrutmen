@@ -14,6 +14,21 @@
                             <i class="icon-notebook menu-icon"></i><span class="nav-text">Lowongan</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ url('/admin/lamaran') }}" aria-expanded="false">
+                            <i class="icon-notebook menu-icon"></i><span class="nav-text">Lamaran</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('/admin/pelamar') }}" aria-expanded="false">
+                            <i class="icon-notebook menu-icon"></i><span class="nav-text">Pelamar</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('/admin/akun') }}" aria-expanded="false">
+                            <i class="icon-notebook menu-icon"></i><span class="nav-text">Kelola Akun</span>
+                        </a>
+                    </li>
                     {{-- <li>
                         <a href="{{ url('/admin/pelamar') }}" aria-expanded="false">
                             <i class="icon-badge menu-icon"></i><span class="nav-text">Data Pelamar</span>

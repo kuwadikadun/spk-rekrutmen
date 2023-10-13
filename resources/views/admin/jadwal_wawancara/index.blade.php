@@ -20,7 +20,7 @@
                 </div>
                 @endif
                 <div class="table-responsive">
-                    <table class="table table-striped">
+                    <table class="table table-striped table-bordered zero-configuration">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -53,6 +53,7 @@
                                 <td>{{$item->jam}}</td>
                                 <td>{{$item->lokasi}}</td>
                                 <td>
+                                    <a href="{{ url('/admin/jadwal_wawancara/edit', $item->id) }}" class="btn btn-warning">Edit</a>
                                     <form action="{{url('/admin/jadwal_wawancara/delete', $item->id)}}" method="post" class="d-inline-block">
                                         @csrf
                                         @method('DELETE')

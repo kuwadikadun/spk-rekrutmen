@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_lowongan');
             $table->unsignedBigInteger('id_user');
             $table->date('tanggal_lamaran');
-            $table->string('status');
+            $table->string('status', 10);
             $table->string('catatan');
 
             $table->foreign('id_lowongan')->references('id')->on('lowongans')->onDelete('cascade');

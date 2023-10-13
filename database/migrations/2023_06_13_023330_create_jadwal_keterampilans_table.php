@@ -18,8 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('id_lamaran');
             $table->unsignedBigInteger('id_user');
             $table->date('tanggal_tes');
-            $table->string('jam');
-            $table->string('lokasi');
+            $table->string('jam', 20);
+            $table->string('lokasi', 20);
        
             $table->foreign('id_lamaran')->references('id')->on('lamarans')->onDelete('cascade');
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');

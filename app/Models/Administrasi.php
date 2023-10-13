@@ -15,6 +15,14 @@ class Administrasi extends Model
         'kelengkapan',
         'kerapihan',
         'nilai_ijazah',
+        'nilaiasli_kelengkapan',
+        'nilaiasli_kerapihan',
+        'nilaiasli_ijazah',
+        'nilaibobot_kelengkapan',
+        'nilaibobot_kerapihan',
+        'nilaibobot_ijazah',
+        'cf',
+        'sf',
         'total',
      
     ];

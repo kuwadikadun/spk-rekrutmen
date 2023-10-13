@@ -67,6 +67,8 @@
                                     <option value="" disabled>Pilih Agama</option>
                                     <option value="islam">Islam</option>
                                     <option value="kristen">Kristen</option>
+                                    <option value="hindu">Hindu</option>
+                                    <option value="budha">Budha</option>
                                 </select>
                             </div>
                         </div>

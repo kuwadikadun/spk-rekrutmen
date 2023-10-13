@@ -1,4 +1,4 @@
-@extends('admin.layout.master')
+@extends('user.layout.master')
 
 @section('title', 'Ubah Lowongan Kerja')
 
@@ -43,7 +43,8 @@
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="kualifikasi">Kualifikasi</label>
                             <div class="col-lg-6">
-                                <input readonly type="text" class="form-control" value="{{$item->kualifikasi}}" id="kualifikasi" name="kualifikasi" placeholder="Masukkan tempat lahir...">
+                                <textarea readonly type="text" class="form-control" id="kualifikasi" name="kualifikasi" placeholder="Masukkan alamat lengkap..." style="height: 200px">{{$item->kualifikasi}}</textarea>
+                                {{-- <input readonly type="text" class="form-control" value="{{$item->kualifikasi}}" id="kualifikasi" name="kualifikasi" placeholder="Masukkan tempat lahir..."> --}}
                             </div>
                         </div>
                         <div class="form-group row">

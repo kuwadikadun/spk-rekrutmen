@@ -26,13 +26,13 @@
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="bidang">Nama Lowongan</label>
                             <div class="col-lg-6">
-                                <input type="text" class="form-control" value="{{$lowongan->nama_bidang}}" id="id_lowongan" disabled name="id_lowongan" placeholder="Masukkan Nama Bidang...">
+                                <input type="text" class="form-control" value="{{$lowongan->nama_bidang}}"  id="id_lowongan" disabled name="id_lowongan" placeholder="Masukkan Nama Bidang...">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label" for="posisi">Nama Pelamar</label>
                             <div class="col-lg-6">
-                                <input type="text" class="form-control" value="{{old('posisi')}}" id="id_user" name="id_user" placeholder="Masukkan ID Pelamar...">
+                                <input type="text" class="form-control" value="{{auth()->user()->name}}" readonly id="id_user" name="id_user" placeholder="Masukkan ID Pelamar...">
                             </div>
                         </div>
                         <div class="form-group row">

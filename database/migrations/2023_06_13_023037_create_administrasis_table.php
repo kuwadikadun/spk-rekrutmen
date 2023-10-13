@@ -20,7 +20,15 @@ return new class extends Migration
             $table->integer('kelengkapan');
             $table->integer('kerapihan');
             $table->integer('nilai_ijazah');
-            $table->integer('total');
+            $table->decimal('nilaiasli_kelengkapan', 8,2);
+            $table->decimal('nilaiasli_kerapihan', 8,2);
+            $table->decimal('nilaiasli_ijazah', 8,2);
+            $table->decimal('nilaibobot_kelengkapan', 8,2);
+            $table->decimal('nilaibobot_kerapihan', 8,2);
+            $table->decimal('nilaibobot_ijazah', 8,2);
+            $table->decimal('cf', 8,2);
+            $table->decimal('sf', 8,2);
+            $table->decimal('total', 8,2);
 
 
             $table->foreign('id_lamaran')->references('id')->on('lamarans')->onDelete('cascade');
