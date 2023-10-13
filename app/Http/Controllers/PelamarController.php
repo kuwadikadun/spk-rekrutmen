@@ -58,13 +58,15 @@ class PelamarController extends Controller
         }
 
          // Proses pembaruan dokumen CV
-    if ($request->hasFile('cv')) {
+    if ($request->file('cv')) {
         $cv = $request->file('cv');
         $nama_cv = 'cv' . '_' . date('Ymdhis') . '.' . $cv->getClientOriginalExtension();
         $cv->move('dokumen/', $nama_cv);
         // Update field CV di database jika perlu
         $user->cv = $nama_cv;
     }
+
+    // return $nama_cv;
 
     // Proses pembaruan dokumen Ijazah
     if ($request->hasFile('ijazah')) {
