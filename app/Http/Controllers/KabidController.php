@@ -1159,7 +1159,7 @@ $validasiData['total'] = $totalketerampilan;
                     ->get();
         
                 foreach ($users as $user) {
-                    $total_semua = 0.3 * $user->total_admin + 0.4 * $user->total_terampil + 0.3 * $user->total_wawancara;
+                    $total_semua = round((0.3 * $user->total_admin) + (0.4 * $user->total_terampil) + (0.3 * $user->total_wawancara),2);
         
                     $result = [
                         'name' => $user->name,
@@ -1220,7 +1220,7 @@ $validasiData['total'] = $totalketerampilan;
                     ->get();
         
                 foreach ($users as $user) {
-                    $total_semua = 0.3 * $user->total_admin + 0.4 * $user->total_terampil + 0.3 * $user->total_wawancara;
+                    $total_semua = round((0.3 * $user->total_admin) + (0.4 * $user->total_terampil) + (0.3 * $user->total_wawancara),2);
         
                     $result = [
                         'name' => $user->name,
